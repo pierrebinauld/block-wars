@@ -9,14 +9,14 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.blueglobule.blockwars.engine.graphic.GameDrawer;
+import com.blueglobule.blockwars.engine.graphic.GraphicEngine;
 
 public class ActivityView extends SurfaceView implements SurfaceHolder.Callback {
 
     public static final int FPS = 50;
-    public static final long SLEEP_TIME = (long) (1.0 / FPS * 1000);
 
     private SurfaceHolder holder;
-    DrawingThread drawingThread;
+    GraphicEngine graphicEngine;
     GameDrawer gameDrawer = new GameDrawer();
 
     public ActivityView(Context context) {
@@ -38,19 +38,19 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
         holder = getHolder();
         holder.addCallback(this);
 
-        drawingThread = new DrawingThread();
+        graphicEngine = new GraphicEngine(holder, gameDrawer, FPS);
     }
 
     @Override
-    public boolean onTouchEvent (MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
 //        Log.d("onTouchEvent", "OK !");
         return false;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawingThread.keepDrawing = true;
-        drawingThread.start();
+        graphicEngine.resumeDrawing();
+        new Thread(graphicEngine).start();
     }
 
     @Override
@@ -60,48 +60,18 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        drawingThread.keepDrawing = false;
 
-        boolean joined = false;
-        while (!joined) {
-            try {
-                drawingThread.join();
-                joined = true;
-            } catch (InterruptedException e) {
-            }
-        }
+        graphicEngine.stopDrawing();
+//        drawingThread.keepDrawing = false;
+//
+//        boolean joined = false;
+//        while (!joined) {
+//            try {
+//                drawingThread.join();
+//                joined = true;
+//            } catch (InterruptedException e) {
+//            }
+//        }
     }
 
-    protected void doDraw(Canvas canvas) {
-        gameDrawer.doDraw(canvas);
-    }
-
-    private class DrawingThread extends Thread {
-        boolean keepDrawing = true;
-
-        @Override
-        public void run() {
-            while (keepDrawing) {
-                Canvas canvas = null;
-                try {
-                    canvas = holder.lockCanvas();
-                    if (null != canvas) {
-                        synchronized (holder) {
-                            doDraw(canvas);
-                        }
-                    }
-                } finally {
-                    if (null != canvas) {
-                        holder.unlockCanvasAndPost(canvas);
-                    }
-                }
-
-                //Controlling the number of frames per second.
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                } catch (InterruptedException e) {
-                }
-            }
-        }
-    }
 }
