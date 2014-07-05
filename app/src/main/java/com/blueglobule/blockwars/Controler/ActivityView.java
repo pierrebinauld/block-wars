@@ -1,34 +1,35 @@
-package com.blueglobule.blockwars.view;
+package com.blueglobule.blockwars.Controler;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.blueglobule.blockwars.R;
+import com.blueglobule.blockwars.engine.graphic.GameDrawer;
 
-/**
- * Created by pierre on 03/07/14.
- */
-public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+public class ActivityView extends SurfaceView implements SurfaceHolder.Callback {
+
+    public static final int FPS = 50;
+    public static final long SLEEP_TIME = (long) (1.0 / FPS * 1000);
 
     private SurfaceHolder holder;
     DrawingThread drawingThread;
+    GameDrawer gameDrawer = new GameDrawer();
 
-    public GameView(Context context) {
+    public ActivityView(Context context) {
         super(context);
         init();
     }
 
-    public GameView(Context context, AttributeSet attrs) {
+    public ActivityView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GameView(Context context, AttributeSet attrs, int defStyle) {
+    public ActivityView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -38,6 +39,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         holder.addCallback(this);
 
         drawingThread = new DrawingThread();
+    }
+
+    @Override
+    public boolean onTouchEvent (MotionEvent event) {
+//        Log.d("onTouchEvent", "OK !");
+        return false;
     }
 
     @Override
@@ -65,36 +72,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-
-        Paint paint = new Paint();
-        paint.setARGB(255,255,0,0);
-        canvas.drawCircle(10,10,10,paint);
+    protected void doDraw(Canvas canvas) {
+        gameDrawer.doDraw(canvas);
     }
 
     private class DrawingThread extends Thread {
-        // Utilisé pour arrêter le dessin quand il le faut
         boolean keepDrawing = true;
 
         @Override
         public void run() {
-
             while (keepDrawing) {
                 Canvas canvas = null;
                 try {
                     canvas = holder.lockCanvas();
-                    synchronized (holder) {
-                        onDraw(canvas);
+                    if (null != canvas) {
+                        synchronized (holder) {
+                            doDraw(canvas);
+                        }
                     }
                 } finally {
-                    if (canvas != null) {
+                    if (null != canvas) {
                         holder.unlockCanvasAndPost(canvas);
                     }
                 }
-                // ~50 fps
+
+                //Controlling the number of frames per second.
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
                 }
             }
