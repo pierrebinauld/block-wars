@@ -3,9 +3,9 @@ package com.blueglobule.blockwars.engine.graphic;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-public class GraphicEngine implements Runnable {
+import com.blueglobule.blockwars.engine.Engine;
 
-    boolean keepDrawing = true;
+public class GraphicEngine extends Engine implements Runnable {
 
     long sleepTime;
 
@@ -19,44 +19,27 @@ public class GraphicEngine implements Runnable {
         this.drawer = drawer;
     }
 
-    public boolean isDrawing() {
-        return keepDrawing;
-    }
-
-    public void setKeepDrawing(boolean keepDrawing) {
-        this.keepDrawing = keepDrawing;
-    }
-
-    public void stopDrawing() {
-        this.keepDrawing = false;
-    }
-
-    public void resumeDrawing() {
-        this.keepDrawing = true;
-    }
-
     @Override
-    public void run() {
-        while (keepDrawing) {
-            Canvas canvas = null;
-            try {
-                canvas = surfaceHolder.lockCanvas();
-                if (null != canvas) {
-                    synchronized (surfaceHolder) {
-                        drawer.doDraw(canvas);
-                    }
-                }
-            } finally {
-                if (null != canvas) {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-                }
-            }
+    public void doRun() {
 
-            //Controlling the number of frames per second.
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
+        Canvas canvas = null;
+        try {
+            canvas = surfaceHolder.lockCanvas();
+            if (null != canvas) {
+                synchronized (surfaceHolder) {
+                    drawer.doDraw(canvas);
+                }
             }
+        } finally {
+            if (null != canvas) {
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+
+        //Controlling the number of frames per second.
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
         }
     }
 }

@@ -10,13 +10,17 @@ import android.view.SurfaceView;
 
 import com.blueglobule.blockwars.engine.graphic.GameDrawer;
 import com.blueglobule.blockwars.engine.graphic.GraphicEngine;
+import com.blueglobule.blockwars.engine.physic.PhysicEngine;
 
 public class ActivityView extends SurfaceView implements SurfaceHolder.Callback {
 
     public static final int FPS = 50;
 
     private SurfaceHolder holder;
+
     GraphicEngine graphicEngine;
+    PhysicEngine physicEngine;
+
     GameDrawer gameDrawer = new GameDrawer();
 
     public ActivityView(Context context) {
@@ -39,18 +43,23 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
         holder.addCallback(this);
 
         graphicEngine = new GraphicEngine(holder, gameDrawer, FPS);
+        physicEngine = new PhysicEngine();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        Log.d("onTouchEvent", "OK !");
         return false;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        graphicEngine.resumeDrawing();
-        new Thread(graphicEngine).start();
+        if(!graphicEngine.isRunning()) {
+            graphicEngine.start();
+        }
+
+        if(!physicEngine.isRunning()) {
+            physicEngine.start();
+        }
     }
 
     @Override
@@ -61,7 +70,8 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
 
-        graphicEngine.stopDrawing();
+        graphicEngine.stop();
+        physicEngine.stop();
 //        drawingThread.keepDrawing = false;
 //
 //        boolean joined = false;
