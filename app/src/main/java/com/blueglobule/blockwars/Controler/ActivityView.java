@@ -1,14 +1,15 @@
 package com.blueglobule.blockwars.Controler;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.blueglobule.blockwars.engine.graphic.GameDrawer;
+import com.blueglobule.blockwars.Model.Field;
+import com.blueglobule.blockwars.Model.Game;
+import com.blueglobule.blockwars.engine.graphic.DrawerBuilder;
 import com.blueglobule.blockwars.engine.graphic.GraphicEngine;
 import com.blueglobule.blockwars.engine.physic.PhysicEngine;
 
@@ -18,10 +19,11 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
 
     private SurfaceHolder holder;
 
+    DrawerBuilder builder;
+
     GraphicEngine graphicEngine;
     PhysicEngine physicEngine;
-
-    GameDrawer gameDrawer = new GameDrawer();
+    Field field;
 
     public ActivityView(Context context) {
         super(context);
@@ -42,8 +44,13 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
         holder = getHolder();
         holder.addCallback(this);
 
-        graphicEngine = new GraphicEngine(holder, gameDrawer, FPS);
+        builder = new DrawerBuilder(this.getContext(), new Game(8,8));
+
+
+        graphicEngine = new GraphicEngine(holder, FPS);
         physicEngine = new PhysicEngine();
+
+        field = new Field(8,10);
     }
 
     @Override
@@ -53,6 +60,14 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        builder.setWidth(width);
+        builder.setHeight(height);
+        graphicEngine.setDrawer(builder.buildSurfaceDrawer(width, height));
+
         if(!graphicEngine.isRunning()) {
             graphicEngine.start();
         }
@@ -63,12 +78,8 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d("ActivityView", "surfaceDestroyed");
 
         graphicEngine.stop();
         physicEngine.stop();

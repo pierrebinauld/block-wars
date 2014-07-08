@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 
-public class GameActivity extends Activity {
+public class BlockWarsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 package com.blueglobule.blockwars.engine.graphic;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.blueglobule.blockwars.engine.Engine;
@@ -11,12 +12,21 @@ public class GraphicEngine extends Engine implements Runnable {
 
     SurfaceHolder surfaceHolder;
 
-    Drawer drawer;
+    SurfaceDrawer drawer;
 
-    public GraphicEngine(SurfaceHolder surfaceHolder, Drawer drawer, int fps) {
-        this.sleepTime = (long) (1.0 / fps * 1000);
+    public GraphicEngine(SurfaceHolder surfaceHolder, int fps) {
+        this.setFps(fps);
         this.surfaceHolder = surfaceHolder;
-        this.drawer = drawer;
+    }
+
+    public void setDrawer(SurfaceDrawer drawer) {
+        synchronized (surfaceHolder) {
+            this.drawer = drawer;
+        }
+    }
+
+    public void setFps(int fps) {
+        this.sleepTime = (long) (1.0 / fps * 1000);
     }
 
     @Override
@@ -27,7 +37,7 @@ public class GraphicEngine extends Engine implements Runnable {
             canvas = surfaceHolder.lockCanvas();
             if (null != canvas) {
                 synchronized (surfaceHolder) {
-                    drawer.doDraw(canvas);
+                    drawer.draw(canvas);
                 }
             }
         } finally {
