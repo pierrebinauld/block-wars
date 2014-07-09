@@ -1,18 +1,13 @@
 package com.blueglobule.blockwars.engine.graphic;
 
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
-import android.util.Log;
 
-import com.blueglobule.blockwars.Model.Block;
-import com.blueglobule.blockwars.Model.Game;
+import com.blueglobule.blockwars.model.Block;
+import com.blueglobule.blockwars.model.Game;
 
 import java.util.LinkedList;
 

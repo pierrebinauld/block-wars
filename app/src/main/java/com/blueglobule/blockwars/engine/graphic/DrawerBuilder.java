@@ -5,8 +5,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.blueglobule.blockwars.Model.Block;
-import com.blueglobule.blockwars.Model.Game;
+import com.blueglobule.blockwars.model.Block;
+import com.blueglobule.blockwars.model.Game;
 import com.blueglobule.blockwars.R;
 
 import java.util.HashMap;
@@ -53,6 +53,7 @@ public class DrawerBuilder {
         blocks.put(Block.Type.GREEN, context.getResources().getDrawable(Block.Type.GREEN.id()));
         blocks.put(Block.Type.ORANGE, context.getResources().getDrawable(Block.Type.ORANGE.id()));
         blocks.put(Block.Type.RED, context.getResources().getDrawable(Block.Type.RED.id()));
+        blocks.put(Block.Type.FIRED, context.getResources().getDrawable(Block.Type.FIRED.id()));
     }
 
     public BlockDrawer buildBlockDrawer() {

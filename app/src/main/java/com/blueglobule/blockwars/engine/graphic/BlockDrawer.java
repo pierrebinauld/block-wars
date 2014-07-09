@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-import com.blueglobule.blockwars.Model.Block;
+import com.blueglobule.blockwars.model.Block;
 
 import java.util.Map;
 

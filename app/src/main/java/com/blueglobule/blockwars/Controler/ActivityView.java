@@ -7,8 +7,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.blueglobule.blockwars.Model.Field;
-import com.blueglobule.blockwars.Model.Game;
+import com.blueglobule.blockwars.engine.physic.builders.GameBuilder;
+import com.blueglobule.blockwars.model.Field;
+import com.blueglobule.blockwars.model.Game;
 import com.blueglobule.blockwars.engine.graphic.DrawerBuilder;
 import com.blueglobule.blockwars.engine.graphic.GraphicEngine;
 import com.blueglobule.blockwars.engine.physic.PhysicEngine;
@@ -23,7 +24,6 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
 
     GraphicEngine graphicEngine;
     PhysicEngine physicEngine;
-    Field field;
 
     public ActivityView(Context context) {
         super(context);
@@ -44,13 +44,15 @@ public class ActivityView extends SurfaceView implements SurfaceHolder.Callback 
         holder = getHolder();
         holder.addCallback(this);
 
-        builder = new DrawerBuilder(this.getContext(), new Game(8,8));
+        GameBuilder gameBuilder = new GameBuilder();
+
+        Game game = gameBuilder.buildGame();
+
+        builder = new DrawerBuilder(this.getContext(), game);
 
 
         graphicEngine = new GraphicEngine(holder, FPS);
-        physicEngine = new PhysicEngine();
-
-        field = new Field(8,10);
+        physicEngine = new PhysicEngine(game);
     }
 
     @Override
