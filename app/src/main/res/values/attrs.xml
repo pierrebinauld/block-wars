@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GameTheme">
+        <attr name="AlphaBlock" format="integer"/>
+        <attr name="BetaBlock" format="integer"/>
+        <attr name="GammaBlock" format="integer"/>
+        <attr name="DeltaBlock" format="integer"/>
+        <attr name="FiredBlock" format="integer"/>
+        <attr name="FieldMargin" format="fraction"/>
+        <attr name="FieldColor" format="color"/>
+    </declare-styleable>
+</resources>

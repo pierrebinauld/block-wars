@@ -3,4 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.NoTitleBar.Fullscreen"></style>
 
+    <!-- Base game theme. -->
+    <style name="BaseGameTheme">
+        <item name="AlphaBlock">@drawable/red_block</item>
+        <item name="BetaBlock">@drawable/green_block</item>
+        <item name="GammaBlock">@drawable/orange_block</item>
+        <item name="DeltaBlock">@drawable/blue_block</item>
+        <item name="FiredBlock">@drawable/fired_block</item>
+        <item name="FieldMargin">5%</item>
+        <item name="FieldColor">@android:color/white</item>
+    </style>
+
 </resources>

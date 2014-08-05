@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-    <com.blueglobule.blockwars.Controler.ActivityView
+    <com.blueglobule.blockwars.controler.GameView
+        android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.blueglobule.blockwars.Controler.ActivityView>
+    </com.blueglobule.blockwars.controler.GameView>
 
 </FrameLayout>

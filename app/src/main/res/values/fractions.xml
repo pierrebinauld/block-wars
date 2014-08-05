@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <fraction name="game_field_margin">5%</fraction>
-    <fraction name="game_block_margin">0.1%</fraction>
 
 </resources>
