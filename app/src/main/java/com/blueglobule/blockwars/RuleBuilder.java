@@ -12,6 +12,7 @@ public class RuleBuilder {
                 .addAvailableBlock(Block.Type.GAMMA, 1)
                 .addAvailableBlock(Block.Type.DELTA, 1)
                 .setBlockGenerationPeriod(2000)
+                .setInitialLayerBlockCount(3)
                 .setColumnCount(9)
                 .setColumnSize(13)
                 .setGravity(-0.005f);

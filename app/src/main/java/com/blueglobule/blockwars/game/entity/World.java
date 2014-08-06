@@ -25,7 +25,7 @@ public class World implements GameState {
     }
 
     public void init() {
-        this.field = fieldPhysics.init();
+        fieldPhysics.init(field);
         fieldGraphics.init(field);
     }
 
