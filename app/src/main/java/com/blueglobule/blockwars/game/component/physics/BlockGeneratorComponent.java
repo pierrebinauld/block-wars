@@ -22,6 +22,7 @@ public class BlockGeneratorComponent extends PhysicsComponent<Field> {
 
     public BlockGeneratorComponent(BlockFactory blockFactory) {
         this.blockFactory = blockFactory;
+        this.timer.start(rule.getBlockGenerationPeriod());
     }
 
     @Override
@@ -29,9 +30,9 @@ public class BlockGeneratorComponent extends PhysicsComponent<Field> {
         for (int x = 0; x < field.size(); x++) {
             Column column = field.get(x);
             for (int y = 0; y < rule.getInitialLayerBlockCount(); y++) {
-                int blockIndex = randomService.random(0, probabilityTypes.size());
+                int typeIndex = randomService.random(0, probabilityTypes.size());
 
-                Block block = blockFactory.build(probabilityTypes.get(blockIndex));
+                Block block = blockFactory.build(probabilityTypes.get(typeIndex));
                 column.add(block);
             }
         }
@@ -46,6 +47,8 @@ public class BlockGeneratorComponent extends PhysicsComponent<Field> {
             Block block = blockFactory.build(probabilityTypes.get(blockIndex));
 
             field.get(columnIndex).add(block);
+
+            timer.restart();
         }
     }
 }
