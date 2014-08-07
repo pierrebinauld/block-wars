@@ -1,31 +1,38 @@
 package com.blueglobule.blockwars.game.entity;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Rule {
 
     long blockGenerationPeriod;
+    int initialLayerBlockCount;
 
     int columnCount;
     int columnSize;
     float gravity;
 
-    Map<Block.Type, Integer> availableBlocks;
-
-    public Rule() {
-        this.availableBlocks = new HashMap<Block.Type, Integer>();
-    }
+    List<Block.Type> probabilityTypes = new ArrayList<Block.Type>();
+//    Map<Block.Type, Integer> availableBlocks = new HashMap<Block.Type, Integer>();
 
     public Rule addAvailableBlock(Block.Type block, Integer probability) {
-        availableBlocks.put(block, probability);
+//        availableBlocks.put(block, probability);
+        for (int i=0;i<probability;i++) {
+            probabilityTypes.add(block);
+        }
         return this;
     }
 
-    public Map<Block.Type, Integer> getAvailableBlocks() {
-        return availableBlocks;
+    public List<Block.Type> getProbabilityTypes() {
+        return probabilityTypes;
     }
+
+//    public Map<Block.Type, Integer> getAvailableBlocks() {
+//        return availableBlocks;
+//    }
 
     public long getBlockGenerationPeriod() {
         return blockGenerationPeriod;
@@ -48,6 +55,10 @@ public class Rule {
         return columnSize;
     }
 
+    public int getInitialLayerBlockCount() {
+        return initialLayerBlockCount;
+    }
+
     public Rule setBlockGenerationPeriod(long blockGenerationPeriod) {
         this.blockGenerationPeriod = blockGenerationPeriod;
         return this;
@@ -60,6 +71,11 @@ public class Rule {
 
     public Rule setColumnSize(int columnSize) {
         this.columnSize = columnSize;
+        return this;
+    }
+
+    public Rule setInitialLayerBlockCount(int initialLayerBlockCount) {
+        this.initialLayerBlockCount = initialLayerBlockCount;
         return this;
     }
 }

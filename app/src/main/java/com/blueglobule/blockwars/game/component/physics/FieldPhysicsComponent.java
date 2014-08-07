@@ -17,45 +17,21 @@ import java.util.Map;
 
 public class FieldPhysicsComponent extends PhysicsComponent<Field> {
 
-    private BlockFactory blockFactory;
+    private BlockGeneratorComponent blockGeneratorComponent;
 
-    private Timer blockGeneratorTimer = new Timer();
-
-    public FieldPhysicsComponent() {
-        Rule rule = RuleLocator.getRule();
-        this.blockFactory = new BlockFactory(rule);
-        this.blockGeneratorTimer.start(rule.getBlockGenerationPeriod());
+    public FieldPhysicsComponent() {;
+        this.blockGeneratorComponent = new BlockGeneratorComponent(new BlockFactory(rule));
     }
 
-    public Field init() {
-        Rule rule = RuleLocator.getRule();
-        Field field = new Field(rule);
-        RandomService randomService = Locators.random.get();
-
-        Map<Block.Type, Integer> blocks = rule.getAvailableBlocks();
-        int count = blocks.size();
-
-        for (Column column : field) {
-            for (int i = 0; i < 3; i++) {
-                int rand = randomService.random(0, count);
-                Object[] blockTypes = blocks.keySet().toArray();
-                Block block = blockFactory.build((Block.Type) blockTypes[rand]);
-                block.setAltitude(i);
-                column.add(block);
-            }
-            column.setGround(3);
-        }
-
-        return field;
+    @Override
+    public void init(Field field) {
+        field.init(rule);
+        blockGeneratorComponent.init(field);
     }
 
     @Override
     public void update(Field field) {
-        if (blockGeneratorTimer.isFinished()) {
-            blockGeneratorTimer.restart();
-            Block block = blockFactory.build(Block.Type.ALPHA);
-            field.get(Locators.random.get().random(0, field.size())).add(block);
-        }
+        blockGeneratorComponent.update(field);
 
         applyGravity(field);
     }
@@ -68,9 +44,8 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
                 Block block = column.get(i);
                 block.move();
                 if(block.altitude() <= ground) {
-                    block.land(ground);
-                    ground++;
-                    column.setGround(ground);
+                    column.land(block);
+                    ground = column.ground();
                 }
             }
         }

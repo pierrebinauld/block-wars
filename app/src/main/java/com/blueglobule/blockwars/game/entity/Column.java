@@ -32,4 +32,9 @@ public class Column extends LinkedList<Block> {
     public void setGround(int ground) {
         this.ground = ground;
     }
+
+    public void land(Block block) {
+        block.land(ground);
+        ground++;
+    }
 }

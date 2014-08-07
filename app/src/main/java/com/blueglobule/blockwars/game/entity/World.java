@@ -8,6 +8,7 @@ import com.blueglobule.blockwars.game.component.graphics.FieldGraphicsComponent;
 import com.blueglobule.blockwars.game.component.graphics.HudGraphicsComponent;
 import com.blueglobule.blockwars.game.component.input.FieldInputComponent;
 import com.blueglobule.blockwars.game.component.physics.FieldPhysicsComponent;
+import com.blueglobule.blockwars.locator.RuleLocator;
 
 public class World implements GameState {
 
@@ -28,8 +29,9 @@ public class World implements GameState {
     }
 
     public void init() {
-        this.field = fieldPhysics.init();
-        fieldGraphics.init(field);
+        field = new Field(RuleLocator.getRule());
+        fieldPhysics.init(field);
+        fieldGraphics.init(field); //WARN: Do nothing ?
     }
 
     public void update() {
