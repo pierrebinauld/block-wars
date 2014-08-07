@@ -9,13 +9,9 @@ import com.blueglobule.blockwars.game.entity.World;
 
 public class HudGraphicsComponent extends GraphicsComponent<World> {
 
-    public HudGraphicsComponent(GraphicsMeasurement graphicsMeasurement) {
-        super(graphicsMeasurement);
-    }
-
     @Override
     public void update(World world, Canvas canvas) {
-        Paint paint = GraphicsComponent.getTheme().getPaint();
+        Paint paint = theme.getPaint();
         int margin = graphicsMeasurement.getFieldMargin();
 
         int left = margin - 2;

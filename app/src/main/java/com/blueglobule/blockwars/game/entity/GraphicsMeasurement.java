@@ -1,4 +1,4 @@
-package com.blueglobule.blockwars.game.component.graphics;
+package com.blueglobule.blockwars.game.entity;
 
 import com.blueglobule.blockwars.game.entity.Rule;
 import com.blueglobule.blockwars.locator.RuleLocator;
@@ -29,13 +29,33 @@ public class GraphicsMeasurement {
         this.worldHeight = height;
 
         this.fieldMargin = Math.round(this.worldWidth * fieldMarginFraction);
-        this.fieldWidth = this.worldWidth - 2*fieldMargin;
-        this.blockSize = this.fieldWidth/columnCount;
+        this.fieldWidth = this.worldWidth - 2 * fieldMargin;
+        this.blockSize = this.fieldWidth / columnCount;
         this.fieldHeight = this.blockSize * columnSize;
 
         // Adjustment of margin
-        this.fieldWidth = this.blockSize*columnCount;
-        this.fieldMargin = (this.worldWidth - this.fieldWidth)/2;
+        this.fieldWidth = this.blockSize * columnCount;
+        this.fieldMargin = (this.worldWidth - this.fieldWidth) / 2;
+    }
+
+    public boolean isInField(float x, float y) {
+        if (x < fieldMargin || x > fieldMargin + fieldWidth) {
+            return false;
+        }
+        if (y < fieldMargin || y > fieldMargin + fieldHeight) {
+            return false;
+        }
+        return true;
+    }
+
+    public int translateToColumnIndex(float x) {
+        int columnIndex = (int) ((x - fieldMargin) / blockSize);
+        return columnIndex;
+    }
+
+    public float translateToAltitude(float y) {
+        float altitude = ((y - fieldMargin) / blockSize);
+        return altitude;
     }
 
     public int getWorldWidth() {

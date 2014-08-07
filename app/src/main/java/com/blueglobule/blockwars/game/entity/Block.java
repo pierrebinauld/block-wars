@@ -23,6 +23,7 @@ public class Block {
     private Type type;
     private Drawable drawable;
 
+    private boolean isLanded;
     private float acceleration;
     private float speed;
     private float altitude;
@@ -32,6 +33,7 @@ public class Block {
         this.type = type;
         this.state = State.IDLE;
 
+        this.isLanded = false;
         this.acceleration = 0;
         this.speed = 0;
         this.altitude = 0;
@@ -43,6 +45,7 @@ public class Block {
         clone.setState(state);
         clone.setDrawable(drawable);
 
+        clone.setLanded(isLanded);
         clone.setAcceleration(acceleration);
         clone.setSpeed(speed);
         clone.setAltitude(altitude);
@@ -56,6 +59,7 @@ public class Block {
     }
 
     public void land(float altitude) {
+        this.isLanded = true;
         this.acceleration = 0;
         this.speed = 0;
         this.altitude = altitude;
@@ -67,14 +71,6 @@ public class Block {
 
     public void setDrawable(Drawable drawable) {
         this.drawable = drawable;
-    }
-
-    public float altitude() {
-        return altitude;
-    }
-
-    public void setAltitude(float altitude) {
-        this.altitude = altitude;
     }
 
     public Type type() {
@@ -93,6 +89,14 @@ public class Block {
         this.state = state;
     }
 
+    public boolean isLanded() {
+        return isLanded;
+    }
+
+    public void setLanded(boolean isLanded) {
+        this.isLanded = isLanded;
+    }
+
     public float acceleration() {
         return acceleration;
     }
@@ -107,5 +111,13 @@ public class Block {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public float altitude() {
+        return altitude;
+    }
+
+    public void setAltitude(float altitude) {
+        this.altitude = altitude;
     }
 }

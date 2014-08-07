@@ -13,7 +13,7 @@ public class Theme {
 
 
     private Map<Block.Type, Drawable> drawableBlocks = new HashMap<Block.Type, Drawable>();
-    private Drawable firedDrawableBlock;
+    private Drawable firedBlockDrawable;
     private Paint paint;
     private float fieldMarginPercent;
 
@@ -36,8 +36,8 @@ public class Theme {
         return fieldMarginPercent;
     }
 
-    public Drawable getFiredDrawableBlock() {
-        return firedDrawableBlock;
+    public Drawable getFiredBlockDrawable() {
+        return firedBlockDrawable;
     }
 
     public Theme putDrawableBlockId(Block.Type type, Drawable drawable) {
@@ -55,8 +55,8 @@ public class Theme {
         return this;
     }
 
-    public Theme setFiredDrawableBlock(Drawable firedDrawableBlock) {
-        this.firedDrawableBlock = firedDrawableBlock;
+    public Theme setFiredBlockDrawable(Drawable firedBlockDrawable) {
+        this.firedBlockDrawable = firedBlockDrawable;
         return this;
     }
 }

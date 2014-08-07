@@ -10,8 +10,7 @@ import com.blueglobule.blockwars.game.entity.Field;
 
 public class FieldGraphicsComponent extends GraphicsComponent<Field> {
 
-    public FieldGraphicsComponent(GraphicsMeasurement graphicsMeasurement) {
-        super(graphicsMeasurement);
+    public FieldGraphicsComponent() {
     }
 
     @Override
@@ -23,9 +22,14 @@ public class FieldGraphicsComponent extends GraphicsComponent<Field> {
             for (Block block : column) {
                 int y = (int) (block.altitude() * blockSize + margin);
 
-                Drawable d = block.getDrawable();
-                d.setBounds(x,y,x+blockSize,y+blockSize);
-                d.draw(canvas);
+                Drawable drawable;
+                if(block.state() == Block.State.FIRED) {
+                    drawable = theme.getFiredBlockDrawable();
+                } else {
+                    drawable = block.getDrawable();
+                }
+                drawable.setBounds(x, y, x + blockSize, y + blockSize);
+                drawable.draw(canvas);
             }
             x += blockSize;
         }

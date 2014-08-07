@@ -1,22 +1,20 @@
 package com.blueglobule.blockwars.controler.command;
 
 
-import com.blueglobule.blockwars.game.component.graphics.GraphicsMeasurement;
+import com.blueglobule.blockwars.locator.GraphicsMeasurementLocator;
 
 public class UpdateMeasurementCommand implements Command {
 
-    private GraphicsMeasurement measurement;
     private int width;
     private int height;
 
-    public UpdateMeasurementCommand(GraphicsMeasurement measurement, int width, int height) {
-        this.measurement = measurement;
+    public UpdateMeasurementCommand(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
     @Override
     public void execute() {
-        measurement.update(width, height);
+        GraphicsMeasurementLocator.getGraphicsMeasurement().update(width, height);
     }
 }

@@ -1,10 +1,13 @@
 package com.blueglobule.blockwars.controler;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Switch;
 
 public class GameView extends SurfaceView {
 
@@ -21,13 +24,9 @@ public class GameView extends SurfaceView {
     }
 
     public void init(Controller controller) {
-        SurfaceHolder holder = getHolder();
+        SurfaceHolder holder = this.getHolder();
         holder.addCallback(controller);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return false;
+        this.setOnTouchListener(controller);
     }
 
 }

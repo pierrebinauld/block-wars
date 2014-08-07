@@ -73,18 +73,6 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
                     column.setGround(ground);
                 }
             }
-
-
-//                if(block.altitude() != ground) {
-//                    block.move();
-//                    if (block.altitude() < ground) {
-//                        block.setAltitude(ground);
-//                    }
-//                }
-//                if(block.altitude() == ground) {
-//                    ground++;
-//                }
-
         }
     }
 }

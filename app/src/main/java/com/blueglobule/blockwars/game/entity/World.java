@@ -6,6 +6,7 @@ import android.graphics.Color;
 
 import com.blueglobule.blockwars.game.component.graphics.FieldGraphicsComponent;
 import com.blueglobule.blockwars.game.component.graphics.HudGraphicsComponent;
+import com.blueglobule.blockwars.game.component.input.FieldInputComponent;
 import com.blueglobule.blockwars.game.component.physics.FieldPhysicsComponent;
 
 public class World implements GameState {
@@ -15,11 +16,13 @@ public class World implements GameState {
     private FieldPhysicsComponent fieldPhysics;
     private FieldGraphicsComponent fieldGraphics;
     private HudGraphicsComponent hudGraphics;
+    private FieldInputComponent fieldInputComponent;
 
-    public World(HudGraphicsComponent hudGraphics, FieldGraphicsComponent fieldGraphics, FieldPhysicsComponent fieldPhysics) {
+    public World(HudGraphicsComponent hudGraphics, FieldGraphicsComponent fieldGraphics, FieldPhysicsComponent fieldPhysics, FieldInputComponent fieldInputComponent) {
         this.hudGraphics = hudGraphics;
         this.fieldGraphics = fieldGraphics;
         this.fieldPhysics = fieldPhysics;
+        this.fieldInputComponent = fieldInputComponent;
 
         this.init();
     }
@@ -30,6 +33,7 @@ public class World implements GameState {
     }
 
     public void update() {
+        fieldInputComponent.update(field);
         fieldPhysics.update(field);
     }
 

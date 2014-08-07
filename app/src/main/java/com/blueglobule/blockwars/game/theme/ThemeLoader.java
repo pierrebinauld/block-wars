@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.blueglobule.blockwars.R;
 import com.blueglobule.blockwars.game.entity.Block;
@@ -53,7 +52,7 @@ public class ThemeLoader {
                 .putDrawableBlockId(Block.Type.BETA,  betaBlock)
                 .putDrawableBlockId(Block.Type.GAMMA, gammaBlock)
                 .putDrawableBlockId(Block.Type.DELTA, deltaBlock)
-                .setFiredDrawableBlock(firedBlock)
+                .setFiredBlockDrawable(firedBlock)
                 .setPaint(paint)
                 .setFieldMarginPercent(fieldMarginPercent);
 

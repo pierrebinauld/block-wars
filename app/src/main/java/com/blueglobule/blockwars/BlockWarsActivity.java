@@ -5,13 +5,14 @@ import android.os.Bundle;
 
 import com.blueglobule.blockwars.controler.Controller;
 import com.blueglobule.blockwars.controler.GameView;
+import com.blueglobule.blockwars.game.entity.GraphicsMeasurement;
 import com.blueglobule.blockwars.game.entity.Rule;
 import com.blueglobule.blockwars.game.theme.ThemeLoader;
+import com.blueglobule.blockwars.locator.GraphicsMeasurementLocator;
 import com.blueglobule.blockwars.locator.Locators;
 import com.blueglobule.blockwars.locator.RuleLocator;
 import com.blueglobule.blockwars.locator.ThemeLocator;
 import com.blueglobule.blockwars.service.RandomService;
-import com.blueglobule.blockwars.tool.Timer;
 
 
 public class BlockWarsActivity extends Activity {
@@ -72,5 +73,8 @@ public class BlockWarsActivity extends Activity {
     public void initGraphics() {
         ThemeLoader loader = new ThemeLoader(this);
         ThemeLocator.provide(loader.load(R.style.BaseGameTheme));
+
+        GraphicsMeasurement measurement = new GraphicsMeasurement();
+        GraphicsMeasurementLocator.provide(measurement);
     }
 }
