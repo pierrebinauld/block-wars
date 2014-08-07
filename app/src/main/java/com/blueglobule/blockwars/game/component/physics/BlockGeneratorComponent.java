@@ -34,6 +34,7 @@ public class BlockGeneratorComponent extends PhysicsComponent<Field> {
 
                 Block block = blockFactory.build(probabilityTypes.get(typeIndex));
                 column.add(block);
+                column.land(block);
             }
         }
     }
