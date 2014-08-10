@@ -61,7 +61,7 @@ public class Column extends LinkedList<Block> {
 //        return -1;
 //    }
 
-    public int ground() {
+    public int top() {
         return top;
     }
 
@@ -85,7 +85,7 @@ public class Column extends LinkedList<Block> {
         block = get(index);
         block.setAltitude(block.altitude() - 1);
 
-        block = get(index - 1);
+        block = get(index + 1);
         block.setAltitude(block.altitude() + 1);
     }
 

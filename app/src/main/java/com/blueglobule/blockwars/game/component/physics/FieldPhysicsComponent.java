@@ -36,32 +36,31 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
 
         // Gravity
         for (Column column : field) {
-            int ground = column.ground();
-            for (int i = ground; i < column.size(); i++) {
+            int top = column.top();
+            for (int i = top; i < column.size(); i++) {
                 Block block = column.get(i);
                 block.move();
-                if (block.altitude() <= ground) {
+                if (block.altitude() <= top) {
                     column.land(block);
-                    ground = column.ground();
+                    top = column.top();
                 }
             }
         }
 
-        if (field.hasSelectedBlock()) {
-            Block block = field.selectedBlock();
-            float selectedAltitude = block.selectedAltitude();
+        if (field.hasSelection()) {
+            Block selectedBlock = field.selectedBlock();
+            Column selectedColumn = field.selectedColumn();
+            float selectedAltitude = selectedBlock.selectedAltitude();
 
             if (selectedAltitude < 0f) {
-                block.setSelectedAltitude(0f);
+                selectedBlock.setSelectedAltitude(0f);
+            } else if (selectedAltitude > selectedColumn.top() - 1) {
+                selectedBlock.setSelectedAltitude(selectedColumn.top() - 1);
+            } else if (selectedAltitude < selectedBlock.altitude() - 0.5) {
+                selectedColumn.pushDown((int) selectedBlock.altitude());
+            } else if (selectedAltitude > selectedBlock.altitude() + 0.5) {
+                selectedColumn.pushUp((int) selectedBlock.altitude());
             }
-//            else if (selectedAltitude > column.ground() - 1) {
-//                block.setSelectedAltitude(column.ground() - 1);
-//            }
-// else if (selectedAltitude < block.altitude() - 0.5) {
-//                column.pushDown(i);
-//            } else if (selectedAltitude > block.altitude() + 0.5) {
-//                column.pushUp(i);
-//            }
         }
     }
 }

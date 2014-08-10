@@ -29,7 +29,7 @@ public class World implements GameState {
     }
 
     public void init() {
-        field = new Field(RuleLocator.getRule());
+        field = new Field();
         fieldPhysics.init(field);
         fieldGraphics.init(field); //WARN: Do nothing ?
     }

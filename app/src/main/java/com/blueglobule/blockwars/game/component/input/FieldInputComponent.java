@@ -40,37 +40,26 @@ public class FieldInputComponent extends InputComponent<Field> {
 
     private void actionDown(Field field, float x, float y) {
 
-        if (!field.hasSelectedBlock() && graphicsMeasurement.isInField(x, y)) {
+        if (!field.hasSelection() && graphicsMeasurement.isInField(x, y)) {
             int columnIndex = graphicsMeasurement.translateToColumnIndex(x);
             float altitude = graphicsMeasurement.translateToAltitude(y);
-            Column column = field.get(columnIndex);
-//            Block block = column.retrieve(altitude);
-            //TODO: The field may do the selection -> just pass column index et block index. Then retrieve the selected block from the field and set the selected altitude
-
-            int blockIndex = column.retrieveIndex(altitude);
-//            Block block = column.get(blockIndex);
-            if(null != block && block.isLanded()) {
-                field.selectBlock(block);
-                block.setSelectedAltitude(y);
+            field.select(columnIndex, altitude);
+            if(field.hasSelection()) {
+                field.selectedBlock().setSelectedAltitude(altitude-Field.UNIT/2);
             }
         }
     }
 
     private void actionMove(Field field, float x, float y) {
-//        if(null != selectedBlock) {
-        if(field.hasSelectedBlock()) {
+        if(field.hasSelection()) {
             float altitude = graphicsMeasurement.translateToAltitude(y);
-            field.selectedBlock().setSelectedAltitude(altitude);
+            field.selectedBlock().setSelectedAltitude(altitude-Field.UNIT/2);
         }
     }
 
     private void actionUp(Field field) {
-//        if(null != selectedBlock) {
-        if(field.hasSelectedBlock()) {
-            field.unselectBlock();
-//            selectedBlock.setSelected(false);
-//            selectedBlock = null;
-//            selectedColumn = null;
+        if(field.hasSelection()) {
+            field.unselect();
         }
     }
 

@@ -6,16 +6,14 @@ import java.util.ArrayList;
 
 public class Field extends ArrayList<Column> {
 
+    public static float UNIT = 1f;
+
     private int columnSize;
 
-//    private boolean hasSelectedBlock = false;
-//    private Block selectedBlock;
-//    private int selectedBlockIndex;
-//    private int selectedColumnIndex;
+    private Column selectedColumn;
+    private Block selectedBlock;
 
-    private Selection selection;
-
-    public Field(Rule rule) {
+    public Field() {
     }
 
     public void init(Rule rule) {
@@ -31,60 +29,42 @@ public class Field extends ArrayList<Column> {
         return columnSize;
     }
 
-//    public Block selectedBlock() {
-//        return selectedBlock;
-//    }
-//
-//    public int selectedBlockIndex() {
-//        return selectedBlockIndex;
-//    }
-//
-//    public int selectedColumnIndex() {
-//        return selectedColumnIndex;
-//    }
+    public Block selectedBlock() {
+        return selectedBlock;
+    }
 
-//    public void selectBlock(int selectedColumnIndex, int selectedBlockIndex) {
-//        this.hasSelectedBlock = true;
-//        this.selectedColumnIndex = selectedColumnIndex;
-//        this.selectedBlockIndex = selectedBlockIndex;
-//    }
+    public Column selectedColumn() {
+        return selectedColumn;
+    }
 
-//    public void selectBlock(Block block) {
-//        selectedBlock = block;
-//        selectedBlock.setSelected(true);
-//        hasSelectedBlock = true;
-//    }
-//
-//    public void unselectBlock() {
-//        selectedBlock.setSelected(false);
-//        selectedBlock = null;
-//        hasSelectedBlock = false;
-//    }
+    public void select(Column column, Block block) {
+        selectedBlock = block;
+        selectedColumn = column;
+        selectedBlock.setSelected(true);
+    }
 
-//    public boolean hasSelectedBlock() {
-//        return hasSelectedBlock;
-//    }
+    public void select(int columnIndex, float altitude) {
+        Column column = get(columnIndex);
+        Block block = column.retrieve(altitude);
 
-    public void select(Column column, int blockIndex) {
-        if(column.size() > blockIndex) {
-            Block block = column.get(blockIndex);
-            block.setSelected(true);
-            selection = new Selection(column, blockIndex, block);
+        if(null != block) {
+            selectedBlock = block;
+            selectedColumn = column;
+            selectedBlock.setSelected(true);
         }
     }
 
     public void unselect() {
         if(hasSelection()) {
-            selection.block().setSelected(false);
-            selection = null;
+            selectedBlock.setSelected(false);
+            selectedColumn = null;
+            selectedBlock = null;
         }
     }
 
     public boolean hasSelection() {
-        return null != selection;
+        return null != selectedBlock;
     }
 
-    public Selection selection() {
-        return selection;
-    }
+
 }
