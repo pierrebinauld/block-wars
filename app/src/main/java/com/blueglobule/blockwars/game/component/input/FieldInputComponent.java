@@ -14,10 +14,6 @@ public class FieldInputComponent extends InputComponent<Field> {
 
     private ConcurrentLinkedQueue<MotionEvent> inputs = new ConcurrentLinkedQueue<MotionEvent>();
 
-    //TODO: Move this to field, component do not have intrinsic attribute
-    private Block selectedBlock;
-    private Column selectedColumn;
-
     public FieldInputComponent(ConcurrentLinkedQueue<MotionEvent> inputsQueue) {
         this.inputs = inputsQueue;
     }
@@ -43,36 +39,39 @@ public class FieldInputComponent extends InputComponent<Field> {
     }
 
     private void actionDown(Field field, float x, float y) {
-        if (null == selectedBlock && graphicsMeasurement.isInField(x, y)) {
+
+        if (!field.hasSelectedBlock() && graphicsMeasurement.isInField(x, y)) {
             int columnIndex = graphicsMeasurement.translateToColumnIndex(x);
             float altitude = graphicsMeasurement.translateToAltitude(y);
             Column column = field.get(columnIndex);
-            Block block = column.retrieve(altitude);
+//            Block block = column.retrieve(altitude);
+            //TODO: The field may do the selection -> just pass column index et block index. Then retrieve the selected block from the field and set the selected altitude
 
+            int blockIndex = column.retrieveIndex(altitude);
+//            Block block = column.get(blockIndex);
             if(null != block && block.isLanded()) {
-                selectedBlock = block;
-                selectedColumn = column;
-                block.setState(Block.State.FIRED);
+                field.selectBlock(block);
+                block.setSelectedAltitude(y);
             }
         }
     }
 
     private void actionMove(Field field, float x, float y) {
-        if(null != selectedBlock) {
+//        if(null != selectedBlock) {
+        if(field.hasSelectedBlock()) {
             float altitude = graphicsMeasurement.translateToAltitude(y);
-            if (altitude < 0) {
-                altitude = 0;
-            } else if (altitude > selectedColumn.ground() - 1) {
-                altitude = selectedColumn.ground() - 1;
-            }
-
-            selectedBlock.setAltitude(altitude);
+            field.selectedBlock().setSelectedAltitude(altitude);
         }
     }
 
     private void actionUp(Field field) {
-        selectedBlock = null;
-        selectedColumn = null;
+//        if(null != selectedBlock) {
+        if(field.hasSelectedBlock()) {
+            field.unselectBlock();
+//            selectedBlock.setSelected(false);
+//            selectedBlock = null;
+//            selectedColumn = null;
+        }
     }
 
     public ConcurrentLinkedQueue<MotionEvent> getInputsQueue() {

@@ -4,21 +4,6 @@ import android.graphics.drawable.Drawable;
 
 public class Block {
 
-    public enum Type {
-        ALPHA,
-        BETA,
-        GAMMA,
-        DELTA/*,
-        EPSILON,
-        DZETA,
-        ...*/;
-    }
-
-    public enum State {
-        IDLE,
-        FIRED
-    }
-
     private State state;
     private Type type;
     private Drawable drawable;
@@ -27,6 +12,9 @@ public class Block {
     private float acceleration;
     private float speed;
     private float altitude;
+
+    private boolean isSelected;
+    private float selectedAltitude;
 
     public Block(Type type) {
         this.drawable = null;
@@ -37,6 +25,9 @@ public class Block {
         this.acceleration = 0;
         this.speed = 0;
         this.altitude = 0;
+
+        this.isSelected = false;
+        this.selectedAltitude = 0;
     }
 
     public Block clone() {
@@ -49,6 +40,9 @@ public class Block {
         clone.setAcceleration(acceleration);
         clone.setSpeed(speed);
         clone.setAltitude(altitude);
+
+        clone.setSelected(isSelected);
+        clone.setSelectedAltitude(selectedAltitude);
 
         return clone;
     }
@@ -119,5 +113,40 @@ public class Block {
 
     public void setAltitude(float altitude) {
         this.altitude = altitude;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    public Float selectedAltitude() {
+        return selectedAltitude;
+    }
+
+    public void setSelectedAltitude(float selectedAltitude) {
+        this.selectedAltitude = selectedAltitude;
+    }
+
+    public float displayAltitude() {
+        return isSelected?selectedAltitude:altitude;
+    }
+
+    public enum Type {
+        ALPHA,
+        BETA,
+        GAMMA,
+        DELTA/*,
+        EPSILON,
+        DZETA,
+        ...*/;
+    }
+
+    public enum State {
+        IDLE,
+        FIRED
     }
 }

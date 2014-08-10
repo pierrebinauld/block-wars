@@ -19,7 +19,8 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
 
     private BlockGeneratorComponent blockGeneratorComponent;
 
-    public FieldPhysicsComponent() {;
+    public FieldPhysicsComponent() {
+        ;
         this.blockGeneratorComponent = new BlockGeneratorComponent(new BlockFactory(rule));
     }
 
@@ -33,21 +34,34 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
     public void update(Field field) {
         blockGeneratorComponent.update(field);
 
-        applyGravity(field);
-    }
-
-    private void applyGravity(Field field) {
-
+        // Gravity
         for (Column column : field) {
             int ground = column.ground();
             for (int i = ground; i < column.size(); i++) {
                 Block block = column.get(i);
                 block.move();
-                if(block.altitude() <= ground) {
+                if (block.altitude() <= ground) {
                     column.land(block);
                     ground = column.ground();
                 }
             }
+        }
+
+        if (field.hasSelectedBlock()) {
+            Block block = field.selectedBlock();
+            float selectedAltitude = block.selectedAltitude();
+
+            if (selectedAltitude < 0f) {
+                block.setSelectedAltitude(0f);
+            }
+//            else if (selectedAltitude > column.ground() - 1) {
+//                block.setSelectedAltitude(column.ground() - 1);
+//            }
+// else if (selectedAltitude < block.altitude() - 0.5) {
+//                column.pushDown(i);
+//            } else if (selectedAltitude > block.altitude() + 0.5) {
+//                column.pushUp(i);
+//            }
         }
     }
 }

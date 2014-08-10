@@ -18,9 +18,15 @@ public class FieldGraphicsComponent extends GraphicsComponent<Field> {
         int margin = graphicsMeasurement.getFieldMargin();
         int blockSize = graphicsMeasurement.getBlockSize();
         int x = margin;
+        int y;
         for (Column column : field) {
             for (Block block : column) {
-                int y = (int) (block.altitude() * blockSize + margin);
+                //TODO: Use graphics measurement to retrieve this.
+                if(block.isSelected()) {
+                    y = (int) (block.selectedAltitude() * blockSize + margin);
+                } else {
+                    y = (int) (block.altitude() * blockSize + margin);
+                }
 
                 Drawable drawable;
                 if(block.state() == Block.State.FIRED) {
