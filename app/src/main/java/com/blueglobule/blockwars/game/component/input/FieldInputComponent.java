@@ -27,7 +27,7 @@ public class FieldInputComponent extends InputComponent<Field> {
                     actionDown(field, event.getX(), event.getY());
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    actionMove(field, event.getX(), event.getY());
+                    actionMove(field, event.getY());
                     break;
                 case MotionEvent.ACTION_UP:
                     actionUp(field);
@@ -50,7 +50,7 @@ public class FieldInputComponent extends InputComponent<Field> {
         }
     }
 
-    private void actionMove(Field field, float x, float y) {
+    private void actionMove(Field field, float y) {
         if(field.hasSelection()) {
             float altitude = graphicsMeasurement.translateToAltitude(y);
             field.selectedBlock().setSelectedAltitude(altitude-Field.UNIT/2);
