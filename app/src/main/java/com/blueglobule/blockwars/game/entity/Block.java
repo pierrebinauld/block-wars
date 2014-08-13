@@ -4,6 +4,9 @@ import android.graphics.drawable.Drawable;
 
 public class Block {
 
+    private int x;
+    private int y;
+
     private State state;
     private Type type;
     private Drawable drawable;
@@ -17,6 +20,9 @@ public class Block {
     private float selectedAltitude;
 
     public Block(Type type) {
+        this.x = 0;
+        this.y = 0;
+
         this.drawable = null;
         this.type = type;
         this.state = State.IDLE;
@@ -32,6 +38,9 @@ public class Block {
 
     public Block clone() {
         Block clone = new Block(type);
+
+        clone.setX(x);
+        clone.setY(y);
 
         clone.setState(state);
         clone.setDrawable(drawable);
@@ -133,6 +142,22 @@ public class Block {
 
     public float displayAltitude() {
         return isSelected?selectedAltitude:altitude;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int x() {
+        return x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int y() {
+        return y;
     }
 
     public enum Type {

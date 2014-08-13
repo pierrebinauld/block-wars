@@ -18,10 +18,12 @@ import java.util.Map;
 public class FieldPhysicsComponent extends PhysicsComponent<Field> {
 
     private BlockGeneratorComponent blockGeneratorComponent;
+    private ShipLauncherComponent shipLauncherComponent;
 
     public FieldPhysicsComponent() {
-        ;
+
         this.blockGeneratorComponent = new BlockGeneratorComponent(new BlockFactory(rule));
+        this.shipLauncherComponent = new ShipLauncherComponent();
     }
 
     @Override
@@ -34,19 +36,7 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
     public void update(Field field) {
         blockGeneratorComponent.update(field);
 
-        // Gravity
-        for (Column column : field) {
-            int top = column.top();
-            for (int i = top; i < column.size(); i++) {
-                Block block = column.get(i);
-                block.move();
-                if (block.altitude() <= top) {
-                    column.land(block);
-                    top = column.top();
-                }
-            }
-        }
-
+        //TODO: May be put this in Input Component ?
         if (field.hasSelection()) {
             Block selectedBlock = field.selectedBlock();
             Column selectedColumn = field.selectedColumn();
@@ -62,5 +52,19 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
                 selectedColumn.pushUp((int) selectedBlock.altitude());
             }
         }
+        // Gravity
+        for (Column column : field) {
+            int top = column.top();
+            for (int i = top; i < column.size(); i++) {
+                Block block = column.get(i);
+                block.move();
+                if (block.altitude() <= top) {
+                    column.land(block);
+                    top = column.top();
+                }
+            }
+        }
+
+        shipLauncherComponent.update(field);
     }
 }

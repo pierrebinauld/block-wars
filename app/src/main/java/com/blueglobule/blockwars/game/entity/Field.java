@@ -3,6 +3,9 @@ package com.blueglobule.blockwars.game.entity;
 import com.blueglobule.blockwars.game.entity.factory.BlockFactory;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Field extends ArrayList<Column> {
 
@@ -12,6 +15,8 @@ public class Field extends ArrayList<Column> {
 
     private Column selectedColumn;
     private Block selectedBlock;
+
+    private Queue<Block> movedBlocks = new LinkedList<Block>();
 
     public Field() {
     }
@@ -23,6 +28,13 @@ public class Field extends ArrayList<Column> {
             Column column = new Column();
             this.add(column);
         }
+    }
+
+    @Override
+    public boolean add(Column column) {
+        column.setX(size());
+        column.setField(this);
+        return super.add(column);
     }
 
     public int height() {
@@ -66,5 +78,11 @@ public class Field extends ArrayList<Column> {
         return null != selectedBlock;
     }
 
+    public Queue<Block> getMovedBlocks() {
+        return movedBlocks;
+    }
 
+    public void addMovedBlock(Block block) {
+        movedBlocks.add(block);
+    }
 }

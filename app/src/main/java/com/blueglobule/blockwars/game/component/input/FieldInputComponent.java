@@ -44,23 +44,21 @@ public class FieldInputComponent extends InputComponent<Field> {
             int columnIndex = graphicsMeasurement.translateToColumnIndex(x);
             float altitude = graphicsMeasurement.translateToAltitude(y);
             field.select(columnIndex, altitude);
-            if(field.hasSelection()) {
-                field.selectedBlock().setSelectedAltitude(altitude-Field.UNIT/2);
+            if (field.hasSelection()) {
+                field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
             }
         }
     }
 
     private void actionMove(Field field, float y) {
-        if(field.hasSelection()) {
+        if (field.hasSelection()) {
             float altitude = graphicsMeasurement.translateToAltitude(y);
-            field.selectedBlock().setSelectedAltitude(altitude-Field.UNIT/2);
+            field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
         }
     }
 
     private void actionUp(Field field) {
-        if(field.hasSelection()) {
-            field.unselect();
-        }
+        field.unselect();
     }
 
     public ConcurrentLinkedQueue<MotionEvent> getInputsQueue() {
