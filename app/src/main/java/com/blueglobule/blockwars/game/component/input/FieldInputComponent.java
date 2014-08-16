@@ -45,7 +45,8 @@ public class FieldInputComponent extends InputComponent<Field> {
             float altitude = graphicsMeasurement.translateToAltitude(y);
             field.select(columnIndex, altitude);
             if (field.hasSelection()) {
-                field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
+//                field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
+                changeSelectedAltitude(field, altitude - Field.UNIT / 2);
             }
         }
     }
@@ -53,12 +54,33 @@ public class FieldInputComponent extends InputComponent<Field> {
     private void actionMove(Field field, float y) {
         if (field.hasSelection()) {
             float altitude = graphicsMeasurement.translateToAltitude(y);
-            field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
+            changeSelectedAltitude(field, altitude - Field.UNIT / 2);
         }
     }
 
     private void actionUp(Field field) {
         field.unselect();
+    }
+
+    private void changeSelectedAltitude(Field field, float selectedAltitude) {
+        Block selectedBlock = field.selectedBlock();
+        selectedBlock.setSelectedAltitude(selectedAltitude);
+        Column column = field.get(selectedBlock.x());
+
+        if (selectedAltitude < column.floor()) {
+            selectedBlock.setSelectedAltitude(column.floor());
+
+        } else if (selectedAltitude > column.top() - Field.UNIT) {
+            selectedBlock.setSelectedAltitude(column.top() - Field.UNIT);
+
+        }
+
+        if (selectedAltitude < selectedBlock.altitude() - Field.UNIT/2) {
+            field.slide(selectedBlock, -1);
+
+        } else if (selectedAltitude > selectedBlock.altitude() + Field.UNIT/2) {
+            field.slide(selectedBlock, 1);
+        }
     }
 
     public ConcurrentLinkedQueue<MotionEvent> getInputsQueue() {

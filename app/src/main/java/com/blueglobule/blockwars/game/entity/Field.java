@@ -3,6 +3,7 @@ package com.blueglobule.blockwars.game.entity;
 import com.blueglobule.blockwars.game.entity.factory.BlockFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -72,6 +73,30 @@ public class Field extends ArrayList<Column> {
             selectedColumn = null;
             selectedBlock = null;
         }
+    }
+
+
+    public void slide(Block block, int step) {
+        int nextPosition = block.y() + step;
+        Column column = get(block.x());
+
+        int size = column.size();
+        if (nextPosition < 0 || nextPosition >= size) {
+            return;
+        }
+
+        Block otherBlock = column.get(nextPosition);
+        float nextAltitude = otherBlock.altitude();
+        otherBlock.setAltitude(block.altitude());
+        otherBlock.setY(block.y());
+        this.addMovedBlock(otherBlock);
+
+        block.setAltitude(nextAltitude);
+        block.setY(nextPosition);
+        this.addMovedBlock(block);
+
+
+        Collections.swap(column, block.y(), otherBlock.y());
     }
 
     public boolean hasSelection() {

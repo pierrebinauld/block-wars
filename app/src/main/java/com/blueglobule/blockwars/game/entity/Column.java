@@ -41,48 +41,12 @@ public class Column extends LinkedList<Block> {
         top++;
     }
 
-    // May i have to put this in field ?
-    public void pushUp(int index) {
-        int size = size();
-        if (size == index || size < 2) {
-            return;
-        }
-        Collections.swap(this, index, index + 1);
-
-        Block block;
-        block = get(index);
-        block.setAltitude(block.altitude() - 1);
-        block.setY(index);
-        field.addMovedBlock(block);
-
-        block = get(index + 1);
-        block.setAltitude(block.altitude() + 1);
-        block.setY(index + 1);
-        field.addMovedBlock(block);
-    }
-
-    // May i have to put this in field ?
-    public void pushDown(int index) {
-        if (0 == index || size() < 2) {
-            return;
-        }
-        Collections.swap(this, index, index - 1);
-
-        Block block;
-        block = get(index);
-        block.setAltitude(block.altitude() + 1);
-        block.setY(index);
-        field.addMovedBlock(block);
-
-        block = get(index - 1);
-        block.setAltitude(block.altitude() - 1);
-        block.setY(index - 1);
-        field.addMovedBlock(block);
-
-    }
-
     public int top() {
         return top;
+    }
+
+    public int floor() {
+        return floor;
     }
 
     public void setTop(int top) {

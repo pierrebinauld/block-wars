@@ -36,22 +36,7 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
     public void update(Field field) {
         blockGeneratorComponent.update(field);
 
-        //TODO: May be put this in Input Component ?
-        if (field.hasSelection()) {
-            Block selectedBlock = field.selectedBlock();
-            Column selectedColumn = field.selectedColumn();
-            float selectedAltitude = selectedBlock.selectedAltitude();
 
-            if (selectedAltitude < 0f) {
-                selectedBlock.setSelectedAltitude(0f);
-            } else if (selectedAltitude > selectedColumn.top() - 1) {
-                selectedBlock.setSelectedAltitude(selectedColumn.top() - 1);
-            } else if (selectedAltitude < selectedBlock.altitude() - 0.5) {
-                selectedColumn.pushDown((int) selectedBlock.altitude());
-            } else if (selectedAltitude > selectedBlock.altitude() + 0.5) {
-                selectedColumn.pushUp((int) selectedBlock.altitude());
-            }
-        }
         // Gravity
         for (Column column : field) {
             int top = column.top();

@@ -29,40 +29,46 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
 
     private void operateLaunching(Field field, Block block) {
         if(Block.State.FIRED != block.state()) {
-            int x = block.x();
-            int y = block.y();
 
             Block.Type type = block.type();
-            int x1 = horizontalLookUpFor(field, type, x, y, -1);
-            int x2 = horizontalLookUpFor(field, type, x, y, 1);
+            int x1 = horizontalLookUpFor(field, block, -1);
+            int x2 = horizontalLookUpFor(field, block, 1);
 
-            int y1 = y;
-            int y2 = y;
+            int y1 = block.y();
+            int y2 = block.y();
 
             if(x2 - x1 >= 3 - 1) { // Magic number !
+                if(block.isSelected()) {
+                    field.unselect();
+                }
                 for(int i=x1; i<x2+1; i++) {
-                    field.get(i).get(y).setState(Block.State.FIRED);
+                    field.get(i).get(block.y()).setState(Block.State.FIRED);
                 }
             }
         }
     }
 
-    private int horizontalLookUpFor(Field field, Block.Type type, int x, int y, int step) {
-        int result = x;
-        boolean run = true;
+    private int horizontalLookUpFor(Field field, Block block, int step) {
+        int result = block.x();
 
-        do {
-            if(result+step < 0 || result+step >= field.size()) {
+        boolean run = true;
+        Block.Type type = block.type();
+        int y = block.y();
+        int nextStep = result + step;
+
+        while(run) {
+            if(nextStep < 0 || nextStep >= field.size()) {
                 run = false;
             } else {
-                Column column = field.get(result+step);
-                if(y >= column.size() || Block.State.FIRED == column.get(y).state() || column.get(y).type() != type) {
+                Column column = field.get(nextStep);
+                if (y >= column.size() || Block.State.FIRED == column.get(y).state() || column.get(y).type() != type) {
                     run = false;
                 } else {
-                    result += step;
+                    result = nextStep;
+                    nextStep += step;
                 }
             }
-        } while(run);
+        }
 
         return result;
     }
