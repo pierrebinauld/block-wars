@@ -15,6 +15,7 @@ public class RuleBuilder {
                 .setInitialLayerBlockCount(3)
                 .setColumnCount(9)
                 .setColumnSize(13)
-                .setGravity(-0.005f);
+                .setGravity(-0.005f)
+                .setFiredBlockCount(3);
     }
 }

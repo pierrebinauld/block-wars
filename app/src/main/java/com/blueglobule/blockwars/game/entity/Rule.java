@@ -15,6 +15,7 @@ public class Rule {
     int columnSize;
     float gravity;
 
+    private int firedBlockCount;
     List<Block.Type> probabilityTypes = new ArrayList<Block.Type>();
 //    Map<Block.Type, Integer> availableBlocks = new HashMap<Block.Type, Integer>();
 
@@ -76,6 +77,15 @@ public class Rule {
 
     public Rule setInitialLayerBlockCount(int initialLayerBlockCount) {
         this.initialLayerBlockCount = initialLayerBlockCount;
+        return this;
+    }
+
+    public int getFiredBlockCount() {
+        return firedBlockCount;
+    }
+
+    public Rule setFiredBlockCount(int firedBlockCount) {
+        this.firedBlockCount = firedBlockCount;
         return this;
     }
 }

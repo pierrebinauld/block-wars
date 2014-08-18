@@ -30,19 +30,28 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
     private void operateLaunching(Field field, Block block) {
         if(Block.State.FIRED != block.state()) {
 
-            Block.Type type = block.type();
             int x1 = horizontalLookUpFor(field, block, -1);
             int x2 = horizontalLookUpFor(field, block, 1);
 
-            int y1 = block.y();
-            int y2 = block.y();
+            int y1 = verticalLookUpFor(field, block, -1);
+            int y2 = verticalLookUpFor(field, block, 1);
 
-            if(x2 - x1 >= 3 - 1) { // Magic number !
+            if(x2 - x1 + 1 >= rule.getFiredBlockCount()) {
                 if(block.isSelected()) {
                     field.unselect();
                 }
                 for(int i=x1; i<x2+1; i++) {
                     field.get(i).get(block.y()).setState(Block.State.FIRED);
+                }
+            }
+
+            if(y2 - y1 + 1 >= rule.getFiredBlockCount()) {
+                if(block.isSelected()) {
+                    field.unselect();
+                }
+                Column column = field.get(block.x());
+                for(int i=y1; i<y2+1; i++) {
+                    column.get(i).setState(Block.State.FIRED);
                 }
             }
         }
@@ -62,6 +71,31 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
             } else {
                 Column column = field.get(nextStep);
                 if (y >= column.size() || Block.State.FIRED == column.get(y).state() || column.get(y).type() != type) {
+                    run = false;
+                } else {
+                    result = nextStep;
+                    nextStep += step;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private int verticalLookUpFor(Field field, Block block, int step) {
+        int result = block.y();
+
+        boolean run = true;
+        Block.Type type = block.type();
+        int nextStep = result + step;
+        Column column = field.get(block.x());
+
+        while(run) {
+            if(nextStep < 0 || nextStep >= column.size()) {
+                run = false;
+            } else {
+                Block testedBlock = column.get(nextStep);
+                if (Block.State.FIRED == testedBlock.state() || testedBlock.type() != type) {
                     run = false;
                 } else {
                     result = nextStep;
