@@ -1,68 +1,62 @@
 package com.blueglobule.blockwars.game.entity;
 
-import com.blueglobule.blockwars.game.entity.factory.BlockFactory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class Field extends ArrayList<Column> {
+public class Field extends ArrayList<Lane> {
 
     public static float UNIT = 1f;
 
-    private int columnSize;
+    private int laneSize;
 
-    private Column selectedColumn;
     private Block selectedBlock;
 
     private Queue<Block> movedBlocks = new LinkedList<Block>();
+
+    private Set<Ship> ships = new TreeSet<Ship>();
 
     public Field() {
     }
 
     public void init(Rule rule) {
-        this.columnSize = rule.columnSize;
+        this.laneSize = rule.getLaneSize();
 
-        for (int x = 0; x < rule.columnCount; x++) {
-            Column column = new Column();
-            this.add(column);
+        for (int x = 0; x < rule.getLaneCount(); x++) {
+            this.add(new Lane());
         }
     }
 
     @Override
-    public boolean add(Column column) {
-        column.setX(size());
-        column.setField(this);
-        return super.add(column);
+    public boolean add(Lane lane) {
+        lane.setX(size());
+        lane.setField(this);
+        return super.add(lane);
+    }
+
+    public boolean add(Ship ship) {
+
+        return ships.add(ship);
     }
 
     public int height() {
-        return columnSize;
+        return laneSize;
     }
 
     public Block selectedBlock() {
         return selectedBlock;
     }
 
-    public Column selectedColumn() {
-        return selectedColumn;
-    }
-
-    public void select(Column column, Block block) {
-        selectedBlock = block;
-        selectedColumn = column;
-        selectedBlock.setSelected(true);
-    }
-
-    public void select(int columnIndex, float altitude) {
-        Column column = get(columnIndex);
-        Block block = column.retrieve(altitude);
+    public void select(int laneIndex, float altitude) {
+        Lane lane = get(laneIndex);
+        Block block = lane.retrieve(altitude);
 
         if(null != block) {
             selectedBlock = block;
-            selectedColumn = column;
             selectedBlock.setSelected(true);
         }
     }
@@ -70,7 +64,6 @@ public class Field extends ArrayList<Column> {
     public void unselect() {
         if(hasSelection()) {
             selectedBlock.setSelected(false);
-            selectedColumn = null;
             selectedBlock = null;
         }
     }
@@ -78,25 +71,30 @@ public class Field extends ArrayList<Column> {
 
     public void slide(Block block, int step) {
         int nextPosition = block.y() + step;
-        Column column = get(block.x());
+        Lane lane = get(block.x());
 
-        int size = column.size();
+        int size = lane.size();
         if (nextPosition < 0 || nextPosition >= size) {
             return;
         }
 
-        Block otherBlock = column.get(nextPosition);
+        Block otherBlock = lane.get(nextPosition);
         float nextAltitude = otherBlock.altitude();
         otherBlock.setAltitude(block.altitude());
         otherBlock.setY(block.y());
-        this.addMovedBlock(otherBlock);
 
         block.setAltitude(nextAltitude);
         block.setY(nextPosition);
-        this.addMovedBlock(block);
 
+        Collections.swap(lane, block.y(), otherBlock.y());
 
-        Collections.swap(column, block.y(), otherBlock.y());
+        if(block.y() < otherBlock.y()) {
+            this.addMovedBlock(block);
+            this.addMovedBlock(otherBlock);
+        } else {
+            this.addMovedBlock(otherBlock);
+            this.addMovedBlock(block);
+        }
     }
 
     public boolean hasSelection() {

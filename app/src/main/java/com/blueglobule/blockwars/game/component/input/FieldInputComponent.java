@@ -41,9 +41,9 @@ public class FieldInputComponent extends InputComponent<Field> {
     private void actionDown(Field field, float x, float y) {
 
         if (!field.hasSelection() && graphicsMeasurement.isInField(x, y)) {
-            int columnIndex = graphicsMeasurement.translateToColumnIndex(x);
+            int laneIndex = graphicsMeasurement.translateToLaneIndex(x);
             float altitude = graphicsMeasurement.translateToAltitude(y);
-            field.select(columnIndex, altitude);
+            field.select(laneIndex, altitude);
             if (field.hasSelection()) {
 //                field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
                 changeSelectedAltitude(field, altitude - Field.UNIT / 2);
@@ -65,7 +65,7 @@ public class FieldInputComponent extends InputComponent<Field> {
     private void changeSelectedAltitude(Field field, float selectedAltitude) {
         Block selectedBlock = field.selectedBlock();
         selectedBlock.setSelectedAltitude(selectedAltitude);
-        Column column = field.get(selectedBlock.x());
+        Column column = selectedBlock.column();
 
         if (selectedAltitude < column.floor()) {
             selectedBlock.setSelectedAltitude(column.floor());

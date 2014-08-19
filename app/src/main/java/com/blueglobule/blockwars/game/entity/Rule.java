@@ -2,22 +2,19 @@ package com.blueglobule.blockwars.game.entity;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Rule {
 
-    long blockGenerationPeriod;
-    int initialLayerBlockCount;
+    private long blockGenerationPeriod;
+    private int initialLayerBlockCount;
 
-    int columnCount;
-    int columnSize;
-    float gravity;
+    private int laneCount;
+    private int laneSize;
+    private float gravity;
 
     private int firedBlockCount;
-    List<Block.Type> probabilityTypes = new ArrayList<Block.Type>();
-//    Map<Block.Type, Integer> availableBlocks = new HashMap<Block.Type, Integer>();
+    private List<Block.Type> probabilityTypes = new ArrayList<Block.Type>();
 
     public Rule addAvailableBlock(Block.Type block, Integer probability) {
 //        availableBlocks.put(block, probability);
@@ -30,10 +27,6 @@ public class Rule {
     public List<Block.Type> getProbabilityTypes() {
         return probabilityTypes;
     }
-
-//    public Map<Block.Type, Integer> getAvailableBlocks() {
-//        return availableBlocks;
-//    }
 
     public long getBlockGenerationPeriod() {
         return blockGenerationPeriod;
@@ -48,12 +41,12 @@ public class Rule {
         return this;
     }
 
-    public int getColumnCount() {
-        return columnCount;
+    public int getLaneCount() {
+        return laneCount;
     }
 
-    public int getColumnSize() {
-        return columnSize;
+    public int getLaneSize() {
+        return laneSize;
     }
 
     public int getInitialLayerBlockCount() {
@@ -65,13 +58,13 @@ public class Rule {
         return this;
     }
 
-    public Rule setColumnCount(int columnCount) {
-        this.columnCount = columnCount;
+    public Rule setLaneCount(int laneCount) {
+        this.laneCount = laneCount;
         return this;
     }
 
-    public Rule setColumnSize(int columnSize) {
-        this.columnSize = columnSize;
+    public Rule setLaneSize(int laneSize) {
+        this.laneSize = laneSize;
         return this;
     }
 

@@ -6,6 +6,7 @@ public class Block {
 
     private int x;
     private int y;
+    private Column column;
 
     private State state;
     private Type type;
@@ -41,6 +42,7 @@ public class Block {
 
         clone.setX(x);
         clone.setY(y);
+        clone.setColumn(column);
 
         clone.setState(state);
         clone.setDrawable(drawable);
@@ -61,11 +63,12 @@ public class Block {
         altitude += speed;
     }
 
-    public void land(float altitude) {
+    public void land(Column column) {
+        this.column = column;
         this.isLanded = true;
         this.acceleration = 0;
         this.speed = 0;
-        this.altitude = altitude;
+        this.altitude = column.topAltitude();
     }
 
     public Drawable getDrawable() {
@@ -158,6 +161,14 @@ public class Block {
 
     public int y() {
         return y;
+    }
+
+    public void setColumn(Column column) {
+        this.column = column;
+    }
+
+    public Column column() {
+        return column;
     }
 
     public enum Type {

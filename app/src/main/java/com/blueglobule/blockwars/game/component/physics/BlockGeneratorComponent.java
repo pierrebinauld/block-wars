@@ -4,6 +4,7 @@ import com.blueglobule.blockwars.game.component.PhysicsComponent;
 import com.blueglobule.blockwars.game.entity.Block;
 import com.blueglobule.blockwars.game.entity.Column;
 import com.blueglobule.blockwars.game.entity.Field;
+import com.blueglobule.blockwars.game.entity.Lane;
 import com.blueglobule.blockwars.game.entity.factory.BlockFactory;
 import com.blueglobule.blockwars.locator.Locators;
 import com.blueglobule.blockwars.service.RandomService;
@@ -28,12 +29,13 @@ public class BlockGeneratorComponent extends PhysicsComponent<Field> {
     @Override
     public void init(Field field) {
         for (int x = 0; x < field.size(); x++) {
-            Column column = field.get(x);
+            Lane lane = field.get(x);
+            Column column = lane.getColumns().last();
             for (int y = 0; y < rule.getInitialLayerBlockCount(); y++) {
                 int typeIndex = randomService.random(0, probabilityTypes.size());
 
                 Block block = blockFactory.build(probabilityTypes.get(typeIndex));
-                column.add(block);
+                lane.add(block);
                 column.land(block);
             }
         }

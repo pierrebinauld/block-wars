@@ -1,13 +1,11 @@
 package com.blueglobule.blockwars.game.component.physics;
 
-import android.util.Log;
-
 import com.blueglobule.blockwars.game.component.PhysicsComponent;
 import com.blueglobule.blockwars.game.entity.Block;
 import com.blueglobule.blockwars.game.entity.Column;
 import com.blueglobule.blockwars.game.entity.Field;
+import com.blueglobule.blockwars.game.entity.Lane;
 
-import java.util.List;
 import java.util.Queue;
 
 public class ShipLauncherComponent extends PhysicsComponent<Field> {
@@ -27,6 +25,12 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
         }
     }
 
+    /**
+     * Search similar type block around a block in a field.
+     * If there are enough similar block then create a Ship and fire !
+     * @param field
+     * @param block
+     */
     private void operateLaunching(Field field, Block block) {
         if(Block.State.FIRED != block.state()) {
 
@@ -49,9 +53,9 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
                 if(block.isSelected()) {
                     field.unselect();
                 }
-                Column column = field.get(block.x());
+                Lane lane = field.get(block.x());
                 for(int i=y1; i<y2+1; i++) {
-                    column.get(i).setState(Block.State.FIRED);
+                    lane.get(i).setState(Block.State.FIRED);
                 }
             }
         }
@@ -69,8 +73,8 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
             if(nextStep < 0 || nextStep >= field.size()) {
                 run = false;
             } else {
-                Column column = field.get(nextStep);
-                if (y >= column.size() || Block.State.FIRED == column.get(y).state() || column.get(y).type() != type) {
+                Lane lane = field.get(nextStep);
+                if (y >= lane.size() || Block.State.FIRED == lane.get(y).state() || lane.get(y).type() != type) {
                     run = false;
                 } else {
                     result = nextStep;
@@ -88,13 +92,13 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
         boolean run = true;
         Block.Type type = block.type();
         int nextStep = result + step;
-        Column column = field.get(block.x());
+        Lane lane = field.get(block.x());
 
         while(run) {
-            if(nextStep < 0 || nextStep >= column.size()) {
+            if(nextStep < 0 || nextStep >= lane.size()) {
                 run = false;
             } else {
-                Block testedBlock = column.get(nextStep);
+                Block testedBlock = lane.get(nextStep);
                 if (Block.State.FIRED == testedBlock.state() || testedBlock.type() != type) {
                     run = false;
                 } else {

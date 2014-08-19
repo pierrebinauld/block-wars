@@ -19,7 +19,7 @@ public class BlockFactory extends ThemeLocator {
 
         prototype.setAcceleration(rule.getGravity());
         prototype.setSpeed(0);
-        prototype.setAltitude(rule.getColumnSize() + 1);
+        prototype.setAltitude(rule.getLaneSize() + 1);
     }
 
     public Block build(Block.Type type) {

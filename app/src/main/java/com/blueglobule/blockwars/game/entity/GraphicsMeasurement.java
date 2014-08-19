@@ -1,6 +1,5 @@
 package com.blueglobule.blockwars.game.entity;
 
-import com.blueglobule.blockwars.game.entity.Rule;
 import com.blueglobule.blockwars.locator.RuleLocator;
 import com.blueglobule.blockwars.locator.ThemeLocator;
 
@@ -22,8 +21,8 @@ public class GraphicsMeasurement {
 //        float fieldMarginFraction = context.getResources().getFraction(R.fraction.game_field_margin, 1, 1);
         float fieldMarginFraction = ThemeLocator.getTheme().getFieldMarginPercent();
 
-        int columnCount = RuleLocator.getRule().getColumnCount();
-        int columnSize = RuleLocator.getRule().getColumnSize();
+        int columnCount = RuleLocator.getRule().getLaneCount();
+        int columnSize = RuleLocator.getRule().getLaneSize();
 
         this.worldWidth = width;
         this.worldHeight = height;
@@ -48,9 +47,9 @@ public class GraphicsMeasurement {
         return true;
     }
 
-    public int translateToColumnIndex(float x) {
-        int columnIndex = (int) ((x - fieldMargin) / blockSize);
-        return columnIndex;
+    public int translateToLaneIndex(float x) {
+        int laneIndex = (int) ((x - fieldMargin) / blockSize);
+        return laneIndex;
     }
 
     public float translateToAltitude(float y) {

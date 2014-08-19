@@ -1,42 +1,47 @@
 package com.blueglobule.blockwars.game.entity;
 
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class Column extends LinkedList<Block> {
+public class Column implements Comparable<Column> {
 
-    private Field field;
+    private ArrayList<Block> lane;
+
     private int x;
 
     private int top;
     private int floor;
 
-    public Block retrieve(float altitude) {
-        if (altitude < top) {
-            return get((int) Math.floor(altitude));
-        } else { //TODO: Could improve with ship enhancement
-            Block block;
-            int altitudeRounded = (int) Math.floor(altitude);
-            int size = size();
-            for (int i = top; i < altitudeRounded && i < size; i++) {
-                block = get(i);
-                if (altitude >= block.altitude() && altitude <= block.altitude() + 1) {
-                    return block;
-                }
-            }
-        }
-        return null;
+    private float altitude;
+
+
+    public Column(Lane lane) {
+        this.lane = lane;
     }
 
-    @Override
-    public boolean add(Block block) {
-        block.setX(x);
-        block.setY(size());
-        return super.add(block);
+    public Block retrieve(float altitude) {
+//        if (altitude < top) {
+//            return lane.get((int) Math.floor(altitude));
+//        } else { //TODO: Could improve with ship enhancement
+//            Block block;
+//            int altitudeRounded = (int) Math.floor(altitude);
+//            int size = lane.size();
+//            for (int i = top; i < altitudeRounded && i < size; i++) {
+//                block = lane.get(i);
+//                if (altitude >= block.altitude() && altitude <= block.altitude() + 1) {
+//                    return block;
+//                }
+//            }
+//        }
+//        return null;
+
+        float relativeAltitude = altitude - this.altitude;
+        int relativeIndex = (int) Math.floor(relativeAltitude);
+        int index = relativeIndex + floor;
+        return lane.get(index);
     }
 
     public void land(Block block) {
-        block.land(top);
+        block.land(this);
 //        field.addMovedBlock(block);
         top++;
     }
@@ -49,6 +54,14 @@ public class Column extends LinkedList<Block> {
         return floor;
     }
 
+    public float altitude() {
+        return altitude;
+    }
+
+    public float topAltitude() {
+        return altitude + (top - floor) * Field.UNIT;
+    }
+
     public void setTop(int top) {
         this.top = top;
     }
@@ -57,7 +70,9 @@ public class Column extends LinkedList<Block> {
         this.x = x;
     }
 
-    public void setField(Field field) {
-        this.field = field;
+
+    @Override
+    public int compareTo(Column another) {
+        return another.floor - floor;
     }
 }

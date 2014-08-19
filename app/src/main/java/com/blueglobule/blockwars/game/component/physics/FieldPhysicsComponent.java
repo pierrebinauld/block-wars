@@ -1,19 +1,11 @@
 package com.blueglobule.blockwars.game.component.physics;
 
-import android.util.Log;
-
 import com.blueglobule.blockwars.game.component.PhysicsComponent;
 import com.blueglobule.blockwars.game.entity.Block;
 import com.blueglobule.blockwars.game.entity.Column;
 import com.blueglobule.blockwars.game.entity.Field;
-import com.blueglobule.blockwars.game.entity.Rule;
+import com.blueglobule.blockwars.game.entity.Lane;
 import com.blueglobule.blockwars.game.entity.factory.BlockFactory;
-import com.blueglobule.blockwars.locator.Locators;
-import com.blueglobule.blockwars.locator.RuleLocator;
-import com.blueglobule.blockwars.service.RandomService;
-import com.blueglobule.blockwars.tool.Timer;
-
-import java.util.Map;
 
 public class FieldPhysicsComponent extends PhysicsComponent<Field> {
 
@@ -38,14 +30,15 @@ public class FieldPhysicsComponent extends PhysicsComponent<Field> {
 
 
         // Gravity
-        for (Column column : field) {
-            int top = column.top();
-            for (int i = top; i < column.size(); i++) {
-                Block block = column.get(i);
+        for (Lane lane : field) {
+            Column topColumn = lane.getColumns().last();
+            int top = topColumn.top();
+            for (int i = top; i < lane.size(); i++) {
+                Block block = lane.get(i);
                 block.move();
                 if (block.altitude() <= top) {
-                    column.land(block);
-                    top = column.top();
+                    topColumn.land(block);
+                    top = topColumn.top();
                 }
             }
         }

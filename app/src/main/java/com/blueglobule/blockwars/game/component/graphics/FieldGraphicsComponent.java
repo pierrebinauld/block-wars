@@ -7,6 +7,7 @@ import com.blueglobule.blockwars.game.component.GraphicsComponent;
 import com.blueglobule.blockwars.game.entity.Block;
 import com.blueglobule.blockwars.game.entity.Column;
 import com.blueglobule.blockwars.game.entity.Field;
+import com.blueglobule.blockwars.game.entity.Lane;
 
 public class FieldGraphicsComponent extends GraphicsComponent<Field> {
 
@@ -19,8 +20,8 @@ public class FieldGraphicsComponent extends GraphicsComponent<Field> {
         int blockSize = graphicsMeasurement.getBlockSize();
         int x = margin;
         int y;
-        for (Column column : field) {
-            for (Block block : column) {
+        for (Lane lane : field) {
+            for (Block block : lane) {
                 //TODO: Use graphics measurement to retrieve this.
                 if(block.isSelected()) {
                     y = (int) (block.selectedAltitude() * blockSize + margin);
