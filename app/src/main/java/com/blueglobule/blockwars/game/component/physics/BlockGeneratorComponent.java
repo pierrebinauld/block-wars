@@ -28,28 +28,30 @@ public class BlockGeneratorComponent extends PhysicsComponent<Field> {
 
     @Override
     public void init(Field field) {
-        for (int x = 0; x < field.size(); x++) {
-            Lane lane = field.get(x);
-            Column column = lane.getColumns().last();
+        for (Lane lane : field) {
+            Column column = lane.get(lane.size()-1);
             for (int y = 0; y < rule.getInitialLayerBlockCount(); y++) {
                 int typeIndex = randomService.random(0, probabilityTypes.size());
 
                 Block block = blockFactory.build(probabilityTypes.get(typeIndex));
-                lane.add(block);
-                column.land(block);
+                column.add(block);
             }
+            lane.land(column);
         }
     }
 
     @Override
     public void update(Field field) {
         if (timer.isFinished()) {
-            int columnIndex = randomService.random(0, field.size());
+            int laneIndex = randomService.random(0, field.size());
             int blockIndex = randomService.random(0, probabilityTypes.size());
+
+            Lane lane = field.get(laneIndex);
 
             Block block = blockFactory.build(probabilityTypes.get(blockIndex));
 
-            field.get(columnIndex).add(block);
+            Column column = lane.spawn(block);
+            column.setMovement(Column.Movement.FALLING);
 
             timer.restart();
         }

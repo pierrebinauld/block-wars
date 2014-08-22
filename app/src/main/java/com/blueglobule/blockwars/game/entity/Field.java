@@ -2,6 +2,7 @@ package com.blueglobule.blockwars.game.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -18,7 +19,7 @@ public class Field extends ArrayList<Lane> {
 
     private Queue<Block> movedBlocks = new LinkedList<Block>();
 
-    private Set<Ship> ships = new TreeSet<Ship>();
+    private Set<Ship> ships = new HashSet<Ship>();
 
     public Field() {
     }
@@ -39,7 +40,6 @@ public class Field extends ArrayList<Lane> {
     }
 
     public boolean add(Ship ship) {
-
         return ships.add(ship);
     }
 
@@ -71,14 +71,14 @@ public class Field extends ArrayList<Lane> {
 
     public void slide(Block block, int step) {
         int nextPosition = block.y() + step;
-        Lane lane = get(block.x());
+        Column column = block.column();
 
-        int size = lane.size();
+        int size = column.size();
         if (nextPosition < 0 || nextPosition >= size) {
             return;
         }
 
-        Block otherBlock = lane.get(nextPosition);
+        Block otherBlock = column.get(nextPosition);
         float nextAltitude = otherBlock.altitude();
         otherBlock.setAltitude(block.altitude());
         otherBlock.setY(block.y());
@@ -86,7 +86,7 @@ public class Field extends ArrayList<Lane> {
         block.setAltitude(nextAltitude);
         block.setY(nextPosition);
 
-        Collections.swap(lane, block.y(), otherBlock.y());
+        Collections.swap(column, block.y(), otherBlock.y());
 
         if(block.y() < otherBlock.y()) {
             this.addMovedBlock(block);
@@ -107,5 +107,9 @@ public class Field extends ArrayList<Lane> {
 
     public void addMovedBlock(Block block) {
         movedBlocks.add(block);
+    }
+
+    public Set<Ship> getShips() {
+        return ships;
     }
 }

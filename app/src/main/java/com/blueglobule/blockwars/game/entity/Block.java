@@ -12,9 +12,6 @@ public class Block {
     private Type type;
     private Drawable drawable;
 
-    private boolean isLanded;
-    private float acceleration;
-    private float speed;
     private float altitude;
 
     private boolean isSelected;
@@ -28,9 +25,6 @@ public class Block {
         this.type = type;
         this.state = State.IDLE;
 
-        this.isLanded = false;
-        this.acceleration = 0;
-        this.speed = 0;
         this.altitude = 0;
 
         this.isSelected = false;
@@ -47,9 +41,6 @@ public class Block {
         clone.setState(state);
         clone.setDrawable(drawable);
 
-        clone.setLanded(isLanded);
-        clone.setAcceleration(acceleration);
-        clone.setSpeed(speed);
         clone.setAltitude(altitude);
 
         clone.setSelected(isSelected);
@@ -58,20 +49,18 @@ public class Block {
         return clone;
     }
 
-    public void move() {
-        speed += acceleration;
-        altitude += speed;
-    }
-
     public void land(Column column) {
         this.column = column;
-        this.isLanded = true;
-        this.acceleration = 0;
-        this.speed = 0;
+        this.y = this.column.size();
+        this.column.add(this);
         this.altitude = column.topAltitude();
     }
 
-    public Drawable getDrawable() {
+    public boolean belongsToColumn() {
+        return null != column;
+    }
+
+    public Drawable drawable() {
         return drawable;
     }
 
@@ -95,32 +84,12 @@ public class Block {
         this.state = state;
     }
 
-    public boolean isLanded() {
-        return isLanded;
-    }
-
-    public void setLanded(boolean isLanded) {
-        this.isLanded = isLanded;
-    }
-
-    public float acceleration() {
-        return acceleration;
-    }
-
-    public void setAcceleration(float acceleration) {
-        this.acceleration = acceleration;
-    }
-
-    public float speed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
     public float altitude() {
         return altitude;
+    }
+
+    public void addAltitude(float altitude) {
+        this.altitude += altitude;
     }
 
     public void setAltitude(float altitude) {

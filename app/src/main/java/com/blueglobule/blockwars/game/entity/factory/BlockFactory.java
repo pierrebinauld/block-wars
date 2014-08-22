@@ -17,8 +17,6 @@ public class BlockFactory extends ThemeLocator {
         prototype = new Block(null);
         prototype.setState(Block.State.IDLE);
 
-        prototype.setAcceleration(rule.getGravity());
-        prototype.setSpeed(0);
         prototype.setAltitude(rule.getLaneSize() + 1);
     }
 

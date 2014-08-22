@@ -45,7 +45,7 @@ public class FieldInputComponent extends InputComponent<Field> {
             float altitude = graphicsMeasurement.translateToAltitude(y);
             field.select(laneIndex, altitude);
             if (field.hasSelection()) {
-//                field.selectedBlock().setSelectedAltitude(altitude - Field.UNIT / 2);
+//                field.selectedBlock().setSelectedAltitude(floorAltitude - Field.UNIT / 2);
                 changeSelectedAltitude(field, altitude - Field.UNIT / 2);
             }
         }

@@ -45,6 +45,7 @@ public class ThemeLoader {
         ta.recycle();
 
         Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
         paint.setColor(fieldColor);
 
         Theme theme = new Theme()
