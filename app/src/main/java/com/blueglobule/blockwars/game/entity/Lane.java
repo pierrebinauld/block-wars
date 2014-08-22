@@ -19,9 +19,9 @@ public class Lane extends Runway<Column> {
 
     public Block retrieve(float altitude) {
         for (Column column : this) {
-            if(column.floor() > altitude) {
+            if(column.floorAltitude() > altitude) {
                 return null;
-            } else if(column.top() >= altitude) {
+            } else if(column.topAltitude() >= altitude) {
                 return column.retrieve(altitude);
             }
         }

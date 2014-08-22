@@ -67,11 +67,11 @@ public class FieldInputComponent extends InputComponent<Field> {
         selectedBlock.setSelectedAltitude(selectedAltitude);
         Column column = selectedBlock.column();
 
-        if (selectedAltitude < column.floor()) {
-            selectedBlock.setSelectedAltitude(column.floor());
+        if (selectedAltitude < column.floorAltitude()) {
+            selectedBlock.setSelectedAltitude(column.floorAltitude());
 
-        } else if (selectedAltitude > column.top() - Field.UNIT) {
-            selectedBlock.setSelectedAltitude(column.top() - Field.UNIT);
+        } else if (selectedAltitude > column.topAltitude() - Field.UNIT) {
+            selectedBlock.setSelectedAltitude(column.topAltitude() - Field.UNIT);
 
         }
 
