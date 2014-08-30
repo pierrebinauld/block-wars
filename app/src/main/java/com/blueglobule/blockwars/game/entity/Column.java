@@ -1,8 +1,8 @@
 package com.blueglobule.blockwars.game.entity;
 
-import android.util.Log;
+import java.util.LinkedList;
 
-public class Column extends Runway<Block> {
+public class Column extends LinkedList<Block> {
 
     private Lane lane;
 
@@ -13,7 +13,7 @@ public class Column extends Runway<Block> {
     private boolean movementHasChanged;
 
     private boolean isLanded;
-    private int impulsion;
+    private float impulsion;
     private float acceleration;
     private float speed;
     private float minSpeedLimit;
@@ -39,10 +39,9 @@ public class Column extends Runway<Block> {
         return super.add(block);
     }
 
-    @Override
-    public Column land(Column column) {
+    public Column merge(Column column) {
         float altitude = this.topAltitude();
-        for(Block block : column) {
+        for (Block block : column) {
             this.add(block);
             block.setAltitude(altitude);
             altitude += Field.UNIT;
@@ -52,18 +51,21 @@ public class Column extends Runway<Block> {
         return this;
     }
 
-    @Override
-    public float landingAltitude() {
-        return topAltitude();
-    }
-
     public void move() {
         speed += acceleration;
-        if(speed < minSpeedLimit) {
+
+        if (speed < minSpeedLimit) {
             speed = minSpeedLimit;
         }
 
-        for(Block block : this) {
+        speed += impulsion;
+
+        if (impulsion != 0) {
+            impulsion = 0;
+        }
+
+
+        for (Block block : this) {
             block.addAltitude(speed);
 ////        field.addMovedBlock(block);
         }
@@ -105,12 +107,11 @@ public class Column extends Runway<Block> {
         this.isLanded = isLanded;
     }
 
-
-    public void impulse() {
-        this.impulsion++;
+    public void impulse(float impulsion) {
+        this.impulsion += impulsion;
     }
 
-    public int impulsion() {
+    public float impulsion() {
         return impulsion;
     }
 
@@ -131,7 +132,7 @@ public class Column extends Runway<Block> {
     }
 
     public void setAltitude(float altitude) {
-        for(Block block : this) {
+        for (Block block : this) {
             block.setAltitude(altitude);
             altitude += Field.UNIT;
         }
@@ -146,7 +147,7 @@ public class Column extends Runway<Block> {
     }
 
     public void incrementY() {
-        this.y ++;
+        this.y++;
     }
 
     public Movement movement() {
@@ -175,7 +176,7 @@ public class Column extends Runway<Block> {
     }
 
     public enum Movement {
-        LANDED,
+        LANDING,
         FALLING,
         LAUNCHING,
         FLYING

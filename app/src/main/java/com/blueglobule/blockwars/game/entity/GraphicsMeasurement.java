@@ -53,7 +53,7 @@ public class GraphicsMeasurement {
     }
 
     public float translateToAltitude(float y) {
-        float altitude = ((y - fieldMargin) / blockSize);
+        float altitude =  (((worldHeight -y) - fieldMargin) / blockSize);
         return altitude;
     }
 

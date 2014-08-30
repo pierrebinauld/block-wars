@@ -20,31 +20,33 @@ public class FieldGraphicsComponent extends GraphicsComponent<Field> {
     public void update(Field field, Canvas canvas) {
         int margin = graphicsMeasurement.getFieldMargin();
         int blockSize = graphicsMeasurement.getBlockSize();
+        int worldHeight = graphicsMeasurement.getWorldHeight();
         int x = margin;
         int y;
         for (Lane lane : field) {
-            for(Column column : lane) {
-                if(column.isLanded()) {
-                    theme.getPaint().setColor(Color.BLUE);
-                }
-                canvas.drawRect(
-                        x,
-                        margin + column.floorAltitude() * blockSize,
-                        x + blockSize,
-                        margin + column.topAltitude() * blockSize,
-                        theme.getPaint());
-                theme.getPaint().setColor(Color.WHITE);
+            for (Column column : lane) {
+//                if (column.isLanded()) {
+//                    theme.getPaint().setColor(Color.GREEN);
+//                    theme.getPaint().setStrokeWidth(4);
+//                }
+//                canvas.drawRect(
+//                        x,
+//                        worldHeight - (margin + column.floorAltitude() * blockSize),
+//                        x + blockSize,
+//                        worldHeight - (margin + column.topAltitude() * blockSize),
+//                        theme.getPaint());
+//                theme.getPaint().setColor(Color.WHITE);
 
                 for (Block block : column) {
                     //TODO: Use graphics measurement to retrieve this.
-                    if(block.isSelected()) {
-                        y = (int) (block.selectedAltitude() * blockSize + margin);
+                    if (block.isSelected()) {
+                        y = worldHeight - (int) ((block.selectedAltitude() + 1) * blockSize + margin);
                     } else {
-                        y = (int) (block.altitude() * blockSize + margin);
+                        y = worldHeight - (int) ((block.altitude() + 1) * blockSize + margin);
                     }
 
                     Drawable drawable;
-                    if(block.state() == Block.State.FIRED) {
+                    if (block.state() == Block.State.FIRED) {
                         drawable = theme.getFiredBlockDrawable();
                     } else {
                         drawable = block.drawable();

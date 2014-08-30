@@ -75,7 +75,8 @@ public class ShipLauncherComponent extends PhysicsComponent<Field> {
                 column.setMovement(Column.Movement.LAUNCHING);
                 for (int i = 0; i < firedBlockCount; i++) {
                     column.get(i).setState(Block.State.FIRED);
-                    column.impulse();
+                    //TODO: it is relative to gravity, then will it have to be moved to movement component ?
+                    column.impulse(0.2f); //TODO: Magic Number !
                 }
             }
         }

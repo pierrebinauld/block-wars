@@ -13,6 +13,8 @@ public class Field extends ArrayList<Lane> {
 
     public static float UNIT = 1f;
 
+    private int score;
+
     private int laneSize;
 
     private Block selectedBlock;
@@ -25,6 +27,7 @@ public class Field extends ArrayList<Lane> {
     }
 
     public void init(Rule rule) {
+        this.score = 0;
         this.laneSize = rule.getLaneSize();
 
         for (int x = 0; x < rule.getLaneCount(); x++) {
@@ -111,5 +114,13 @@ public class Field extends ArrayList<Lane> {
 
     public Set<Ship> getShips() {
         return ships;
+    }
+
+    public void addToScore(int points) {
+        score += points;
+    }
+
+    public int score() {
+        return score;
     }
 }

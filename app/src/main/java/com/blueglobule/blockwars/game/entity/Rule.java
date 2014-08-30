@@ -16,6 +16,8 @@ public class Rule {
     private int firedBlockCount;
     private List<Block.Type> probabilityTypes = new ArrayList<Block.Type>();
 
+    private long timeToResetShip;
+
     public Rule addAvailableBlock(Block.Type block, Integer probability) {
 //        availableBlocks.put(block, probability);
         for (int i=0;i<probability;i++) {
@@ -79,6 +81,15 @@ public class Rule {
 
     public Rule setFiredBlockCount(int firedBlockCount) {
         this.firedBlockCount = firedBlockCount;
+        return this;
+    }
+
+    public long getTimeToResetShip() {
+        return timeToResetShip;
+    }
+
+    public Rule setTimeToResetShip(long timeToResetShip) {
+        this.timeToResetShip = timeToResetShip;
         return this;
     }
 }

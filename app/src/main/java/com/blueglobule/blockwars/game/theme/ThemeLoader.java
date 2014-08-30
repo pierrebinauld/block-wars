@@ -47,6 +47,7 @@ public class ThemeLoader {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(fieldColor);
+        paint.setTextSize(100);
 
         Theme theme = new Theme()
                 .putDrawableBlockId(Block.Type.ALPHA, alphaBlock)

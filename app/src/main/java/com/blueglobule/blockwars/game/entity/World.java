@@ -15,8 +15,10 @@ public class World implements GameState {
     private Field field;
 
     private FieldPhysicsComponent fieldPhysics;
+
     private FieldGraphicsComponent fieldGraphics;
     private HudGraphicsComponent hudGraphics;
+
     private FieldInputComponent fieldInputComponent;
 
     public World(HudGraphicsComponent hudGraphics, FieldGraphicsComponent fieldGraphics, FieldPhysicsComponent fieldPhysics, FieldInputComponent fieldInputComponent) {
@@ -41,7 +43,7 @@ public class World implements GameState {
 
     public void render(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
-        hudGraphics.update(this, canvas);
+        hudGraphics.update(field, canvas);
         fieldGraphics.update(field, canvas);
     }
 }

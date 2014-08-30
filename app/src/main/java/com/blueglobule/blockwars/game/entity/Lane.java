@@ -1,20 +1,24 @@
 package com.blueglobule.blockwars.game.entity;
 
+import com.blueglobule.blockwars.tool.Timer;
+
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * A field lane which contain several column. Column belongs to a ship except the first one.
  */
-public class Lane extends Runway<Column> {
+public class Lane extends LinkedList<Column> {
 
     private int x;
     private Field field;
+
+    private Timer resetShipTimer;
 
 //    private Queue<Column> removes = new LinkedList<Column>();
 
     public Lane() {
         this.add(new Column(this, 0));
+        resetShipTimer = new Timer();
     }
 
     public Block retrieve(float altitude) {
@@ -67,17 +71,11 @@ public class Lane extends Runway<Column> {
         }
     }
 
-    @Override
     public Column land(Column column) {
         column.setAltitude(0f);
-        column.setMovement(Column.Movement.LANDED);
+        column.setMovement(Column.Movement.LANDING);
 
         return column;
-    }
-
-    @Override
-    public float landingAltitude() {
-        return 0f;
     }
 
     public float topAltitude() {
@@ -94,6 +92,32 @@ public class Lane extends Runway<Column> {
     public void add(int location, Column column) {
         column.setY(location);
         super.add(location, column);
+    }
+
+    public boolean isTimeToResetShip() {
+        return resetShipTimer.isFinished();
+    }
+
+    public void setTimeToResetShip(long milliseconds) {
+        resetShipTimer.setTarget(milliseconds);
+    }
+
+    public void resetTimeToResetShip() {
+        resetShipTimer.restart();
+    }
+
+    public void resetShip() {
+        if(size() > 0) {
+            Column column = get(0);
+
+            while(size() > 1 && get(1).movement() == Column.Movement.LANDING) {
+                column.merge(get(1));
+            }
+
+            for(Block block : column) {
+                block.setState(Block.State.IDLE);
+            }
+        }
     }
 
     public void setX(int x) {
